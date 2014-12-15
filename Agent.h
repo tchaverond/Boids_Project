@@ -45,7 +45,10 @@ class Agent
     // =======================================================================
     //                               Constructors
     // =======================================================================
-    Agent (double, double);
+    
+    Agent(void);              // should only be used as a fictitious Agent to browse through the boid (seen as a Linked List)
+
+    Agent(double, double);
 
     // =======================================================================
     //                                Destructor
@@ -56,9 +59,13 @@ class Agent
     //                            Accessors: getters
     // =======================================================================
 
+    inline Agent* get_next(void) const;
+
     // =======================================================================
     //                            Accessors: setters
     // =======================================================================
+
+    inline void set_next(Agent*);
 
     // =======================================================================
     //                                Operators
@@ -81,11 +88,11 @@ class Agent
     // =======================================================================
     //                            Forbidden Constructors
     // =======================================================================
-    Agent(void)
+    /*Agent(void)
     {
       printf("%s:%d: error: call to forbidden constructor.\n", __FILE__, __LINE__);
       exit(EXIT_FAILURE);
-    };
+    };*/
     Agent(const Agent &model)
     {
       printf("%s:%d: error: call to forbidden constructor.\n", __FILE__, __LINE__);
@@ -112,6 +119,8 @@ class Agent
 
     double perception_radius;       // | static potential |
 
+    Agent* next;                    // for Linked List purposes
+
 };
 
 
@@ -119,9 +128,19 @@ class Agent
 //                              Getters' definitions
 // ===========================================================================
 
+Agent* Agent::get_next(void) const 
+{
+    return next;
+}
+
 // ===========================================================================
 //                              Setters' definitions
 // ===========================================================================
+
+void Agent::set_next(Agent* new_next)
+{
+    this->next = new_next;
+}
 
 // ===========================================================================
 //                             Operators' definitions

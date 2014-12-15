@@ -36,6 +36,21 @@
 // ===========================================================================
 //                                  Constructors
 // ===========================================================================
+
+Agent::Agent(void)             // should only be used as a fictitious Agent to browse through the boid (seen as a Linked List)
+{
+	x = 0;
+	new_x = 0;
+	y = 0;
+	new_y = 0;
+	x_velocity = 0;
+	y_velocity = 0;
+	perception_radius = 0;
+	next = NULL;
+}
+
+
+
 Agent::Agent(double init_x, double init_y)
 {
 
@@ -46,6 +61,7 @@ Agent::Agent(double init_x, double init_y)
     x_velocity = 0;
     y_velocity = 0;
     perception_radius = 50;
+    next = NULL;
 
 	// !!!  "real" creation, i.e. addition to the boid and into the output window left to be implemented  !!!
 
