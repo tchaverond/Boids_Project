@@ -36,7 +36,7 @@ int Prey::headcount = 0;
 // ===========================================================================
 //                                  Constructors
 // ===========================================================================
-Prey::Prey(double init_x, double init_y)
+Prey::Prey(double init_x, double init_y) : Agent (init_x, init_y)
 {
 
 	contact_radius = 5;
