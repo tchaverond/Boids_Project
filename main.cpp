@@ -40,6 +40,9 @@ int main (int argc, char* argv[])
 
     /**************************************         Parameters' Initialization          **************************************/
 
+    width = 500;
+    height = 500;
+
     step = 0.1;
 
     gamma1 = 5;
@@ -50,21 +53,29 @@ int main (int argc, char* argv[])
 
     /********************************************          Flock Creation          *******************************************/ 
 
-    double a = 100;
-    double b = 100;
-    Prey* Jean_Eudes = new Prey (a,b);
+    Prey* A = new Prey (10,10);
+    Prey* B = new Prey (15,15);
+    Prey* C = new Prey (18,17);
+    Prey* D = new Prey (30,35);
+    Prey* E = new Prey (5,40);
+    Prey* F = new Prey (1,300);
+    Prey* G = new Prey (250,15);
+    Prey* H = new Prey (420,420);
+
     Predator* Marc_Yves = new Predator (150,150);
 
-    Flock->append(Jean_Eudes);
-    Flock->append(Jean_Eudes);
+    Flock->append(A);
+    Flock->append(B);
+    Flock->append(C);
+    Flock->append(D);
+    Flock->append(E);
+    Flock->append(F);
+    Flock->append(G);
+    Flock->append(H);
+
+
     Enemies->append(Marc_Yves);
 
-
-
-
-    /***************************************************************************************************************************
-    ************************************************          Main Loop         ************************************************
-    ***************************************************************************************************************************/
 
 
     Agent* W1 = new Agent();       // the Wanderers Wi will browse through the flock
@@ -81,68 +92,100 @@ int main (int argc, char* argv[])
     kk = 0;
 
 
-    // epic loop begins here !
-    for (W1=Flock->get_head(); W1->get_next() != NULL; W1=W1->get_next())
+    // Test Loop
+    for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
+    {
+        W1->showAll();
+    }
+
+
+
+
+
+
+    /***************************************************************************************************************************
+    ************************************************          Main Loop         ************************************************
+    ***************************************************************************************************************************/
+
+
+
+    double i;
+    for (i=0; i<5; i+=step)
     {
 
-        for (W2=Flock->get_head(); W2->get_next() != NULL; W2=W2->get_next())
+
+        // epic loop begins here !
+        for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
         {
-            if ((W1 != W2) && ((W1->distance(W2)) < W1->get_perception_radius()))  // condition for v1 & v2
+
+            for (W2=Flock->get_head(); W2 != NULL; W2=W2->get_next())
             {
-                k++;                                                               // one more nearby fellow has been found
-
-                v1_x_temp += (W2->get_x_velocity()) - (W1->get_x_velocity());      // taking into account W2's influence on W1's v1
-                v1_y_temp += (W2->get_y_velocity()) - (W1->get_y_velocity());
-
-                v2_x_temp += (W2->get_x()) - (W1->get_x());                        // taking into account W2's influence on W1's v2
-                v2_y_temp += (W2->get_y()) - (W1->get_y());
-
-
-
-                if ((W1->distance(W2)) < W1->get_contact_radius())                 // condition for v3 (OBSTACLES STILL TO BE DONE)
+                if ((W1->get_id() != W2->get_id()) && ((W1->distance(W2)) < W1->get_perception_radius()))  // condition for v1 & v2
                 {
-                    kk++;                                                          // one more really near fellow has been found
+                    k++;                                                               // one more nearby fellow has been found
 
-                    v3_x_temp -= (W2->get_x()) - (W1->get_x());                    // taking into account W2's influence on W1's v3
-                    v3_y_temp += (W2->get_y()) - (W1->get_y());
+                    v1_x_temp += (W2->get_x_velocity()) - (W1->get_x_velocity());      // taking into account W2's influence on W1's v1
+                    v1_y_temp += (W2->get_y_velocity()) - (W1->get_y_velocity());
+
+                    v2_x_temp += (W2->get_x()) - (W1->get_x());                        // taking into account W2's influence on W1's v2
+                    v2_y_temp += (W2->get_y()) - (W1->get_y());
+
+
+
+                    if ((W1->distance(W2)) < W1->get_contact_radius())                 // condition for v3 (OBSTACLES STILL TO BE DONE)
+                    {
+                        kk++;                                                          // one more really near fellow has been found
+
+                        v3_x_temp -= (W2->get_x()) - (W1->get_x());                    // taking into account W2's influence on W1's v3
+                        v3_y_temp += (W2->get_y()) - (W1->get_y());
+                    }
                 }
             }
+
+
+            if (k!=0)
+            {
+                v1_x_temp /= k;
+                v1_y_temp /= k;
+                v2_x_temp /= k;
+                v2_y_temp /= k;
+            }
+
+            if (kk!=0)
+            {
+                v3_x_temp /= kk;
+                v3_y_temp /= kk;
+            }
+
+
+            // !!! wind effects yet to be applied !!!
+
+
+            // calculation and storage of the new velocity and position of W1
+            W1 -> set_new_x_vel (W1->get_x_velocity() + step * (gamma1*v1_x_temp + gamma2*v2_x_temp + gamma3*v3_x_temp));
+            W1 -> set_new_y_vel (W1->get_y_velocity() + step * (gamma1*v1_y_temp + gamma2*v2_y_temp + gamma3*v3_y_temp));
+
+            W1 -> set_new_x (W1->get_x() + step * W1->get_new_x_vel());
+            W1 -> set_new_y (W1->get_y() + step * W1->get_new_y_vel());
+
+            
         }
 
 
-        if (k!=0)
+        // Update Loop : used to update position and velocity values, once they've been calculated for each prey
+        for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
         {
-            v1_x_temp /= k;
-            v1_y_temp /= k;
-            v2_x_temp /= k;
-            v2_y_temp /= k;
+            W1->updateAll();
         }
-
-        if (kk!=0)
-        {
-            v3_x_temp /= kk;
-            v3_y_temp /= kk;
-        }
-
-
-        // calculation and storage of the new velocity and position of W1
-        W1 -> set_new_x_vel (W1->get_x_velocity() + step * (gamma1*v1_x_temp + gamma2*v2_x_temp + gamma3*v3_x_temp));
-        W1 -> set_new_y_vel (W2->get_y_velocity() + step * (gamma1*v1_y_temp + gamma2*v2_y_temp + gamma3*v3_y_temp));
-
-        W1 -> set_new_x (W1->get_x() + step * W1->get_new_x_vel());
-        W1 -> set_new_y (W1->get_y() + step * W1->get_new_y_vel());
-
-        
-    }
-
-
-    // Update Loop : used to update position and velocity values, once they've been calculated for each prey
-    for (W1=Flock->get_head(); W1->get_next() != NULL; W1=W1->get_next())
-    {
-        W1->updateAll();
-    }
     
+    }
 
+
+    // Test Loop
+    for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
+    {
+        W1->showAll();
+    }
 
 	return 0;
 }

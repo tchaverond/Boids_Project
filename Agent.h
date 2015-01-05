@@ -61,6 +61,8 @@ class Agent
 
     inline Agent* get_next(void) const;
 
+    inline int get_id(void) const;
+
     inline double get_perception_radius(void) const;
 
     inline double get_contact_radius(void) const;
@@ -103,6 +105,8 @@ class Agent
 
     void updateAll(void);
 
+    void showAll(void);
+
     // =======================================================================
     //                             Public Attributes
     // =======================================================================
@@ -138,6 +142,8 @@ class Agent
 
     static int total_headcount;
 
+    int id;                        // unique id for each agent, for Linked List purposes 
+
     double x;
     double new_x;
     double y;
@@ -162,6 +168,11 @@ class Agent
 Agent* Agent::get_next(void) const 
 {
     return next;
+}
+
+int Agent::get_id(void) const
+{
+    return id;
 }
 
 double Agent::get_perception_radius(void) const

@@ -122,14 +122,12 @@ class Boid
 
 int Boid::getnb_elts (void) const
 {
-
-  return nb_elts;
+	return nb_elts;
 }
 
 Agent* Boid::get_head (void) const
 {
-
-	return head;               // !!! not 100% sure about that !!!
+    return head; 
 }
 
 // ===========================================================================

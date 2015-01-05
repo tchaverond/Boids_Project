@@ -39,6 +39,7 @@
 
 Agent::Agent(void)             // should only be used as a fictitious Agent to browse through the boid (seen as a Linked List)
 {
+	id = 0;
 	x = 0;
 	new_x = 0;
 	y = 0;
@@ -54,7 +55,9 @@ Agent::Agent(void)             // should only be used as a fictitious Agent to b
 
 Agent::Agent(double init_x, double init_y)
 {
-
+    
+	total_headcount ++;
+    id = total_headcount;
     x = init_x;
     new_x = init_x;
     y = init_y;
@@ -67,7 +70,6 @@ Agent::Agent(double init_x, double init_y)
 
 	// !!! addition to the output window still to be implemented  !!!
 
-	total_headcount ++;
 	printf("Agent created succesfully !\n");
 }
 
@@ -97,6 +99,11 @@ void Agent::updateAll(void)
 	y = new_y;
 	x_velocity = new_x_vel;
 	y_velocity = new_y_vel;
+}
+
+void Agent::showAll(void)
+{
+	printf("Position : %lg %lg\n Velocity : %lg %lg\n", x, y, x_velocity, y_velocity);
 }
 
 // ===========================================================================
