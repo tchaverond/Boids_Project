@@ -135,7 +135,12 @@ int main (int argc, char* argv[])
         
     }
 
-    // update to be done (very soon hopefully)
+
+    // Update Loop : used to update position and velocity values, once they've been calculated for each prey
+    for (W1=Flock->get_head(); W1->get_next() != NULL; W1=W1->get_next())
+    {
+        W1->updateAll();
+    }
     
 
 

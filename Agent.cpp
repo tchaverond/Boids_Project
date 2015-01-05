@@ -91,6 +91,14 @@ double Agent::distance(Agent* Fellow)
 	return (sqrt(result));
 }
 
+void Agent::updateAll(void)
+{
+	x = new_x;
+	y = new_y;
+	x_velocity = new_x_vel;
+	y_velocity = new_y_vel;
+}
+
 // ===========================================================================
 //                                Protected Methods
 // ===========================================================================
