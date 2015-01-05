@@ -45,7 +45,7 @@ Predator::Predator(double init_x, double init_y) : Agent (init_x, init_y)
 	speed = 20;
 
 	headcount ++;
-	printf("Prey created succesfully !\n");
+	printf("Predator created succesfully !\n");
 }
 
 // ===========================================================================

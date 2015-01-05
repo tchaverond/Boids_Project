@@ -63,7 +63,7 @@ Agent::Agent(double init_x, double init_y)
     perception_radius = 50;
     next = NULL;
 
-	// !!!  "real" creation, i.e. addition to the boid and into the output window left to be implemented  !!!
+	// !!! addition to the output window left to be implemented  !!!
 
 	total_headcount ++;
 	printf("Agent created succesfully !\n");
