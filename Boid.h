@@ -1,28 +1,3 @@
-/*#ifndef __Boid_H__
-#define __Boid_H__
-
-#include "Agent.h"
-
-
-class Boid
-{
- protected :
-  Agent* head;
-  int nb_elts;
-  ;
-
- public :
-  Boid(void);
-  //Boid(const Boid&);
-  ~Boid(void);
-  int getnb_elts(void);
-  void append (Agent*);
-  void remove (Agent*);
-
-};
-
-#endif*/
-
 //****************************************************************************
 //
 //
@@ -82,7 +57,9 @@ class Boid
     //                            Accessors: getters
     // =======================================================================
 
-    inline int getnb_elts(void);
+    inline int getnb_elts(void) const;
+
+    inline Agent* get_head (void) const;
 
     // =======================================================================
     //                            Accessors: setters
@@ -143,10 +120,16 @@ class Boid
 //                              Getters' definitions
 // ===========================================================================
 
-int Boid::getnb_elts (void)
+int Boid::getnb_elts (void) const
 {
 
   return nb_elts;
+}
+
+Agent* Boid::get_head (void) const
+{
+
+	return head;               // !!! not 100% sure about that !!!
 }
 
 // ===========================================================================

@@ -39,8 +39,6 @@ int Prey::headcount = 0;
 Prey::Prey(double init_x, double init_y) : Agent (init_x, init_y)
 {
 
-	contact_radius = 5;
-
 	headcount ++;
 	printf("Prey created succesfully !\n");
 }

@@ -61,11 +61,35 @@ class Agent
 
     inline Agent* get_next(void) const;
 
+    inline double get_perception_radius(void) const;
+
+    inline double get_contact_radius(void) const;
+
+    inline double get_x(void) const;
+
+    inline double get_y(void) const;
+
+    inline double get_x_velocity(void) const;
+
+    inline double get_y_velocity(void) const;
+
+    inline double get_new_x_vel(void) const;
+
+    inline double get_new_y_vel(void) const;
+
     // =======================================================================
     //                            Accessors: setters
     // =======================================================================
 
     inline void set_next(Agent*);
+
+    inline void set_new_x(double);
+
+    inline void set_new_y(double);
+
+    inline void set_new_x_vel(double);
+
+    inline void set_new_y_vel(double);
 
     // =======================================================================
     //                                Operators
@@ -74,6 +98,8 @@ class Agent
     // =======================================================================
     //                              Public Methods
     // =======================================================================
+
+    double distance(Agent*);
 
     // =======================================================================
     //                             Public Attributes
@@ -116,8 +142,11 @@ class Agent
     double new_y;
     double x_velocity;
     double y_velocity;
+    double new_x_vel;
+    double new_y_vel;
 
     double perception_radius;       // | static potential |
+    double contact_radius;
 
     Agent* next;                    // for Linked List purposes
 
@@ -133,6 +162,47 @@ Agent* Agent::get_next(void) const
     return next;
 }
 
+double Agent::get_perception_radius(void) const
+{
+    return perception_radius;
+}
+
+double Agent::get_contact_radius(void) const
+{
+    return contact_radius;
+}
+
+double Agent::get_x(void) const
+{
+    return x;
+}
+
+double Agent::get_y(void) const
+{
+    return y;
+}
+
+double Agent::get_x_velocity(void) const
+{
+    return x_velocity;
+}
+
+double Agent::get_y_velocity(void) const
+{
+    return y_velocity;
+}
+
+double Agent::get_new_x_vel(void) const
+{
+    return new_x_vel;
+}
+
+double Agent::get_new_y_vel(void) const
+{
+    return new_y_vel;
+}
+
+
 // ===========================================================================
 //                              Setters' definitions
 // ===========================================================================
@@ -140,6 +210,26 @@ Agent* Agent::get_next(void) const
 void Agent::set_next(Agent* new_next)
 {
     this->next = new_next;
+}
+
+void Agent::set_new_x(double new_value)
+{
+    new_x = new_value;
+}
+
+void Agent::set_new_y(double new_value)
+{
+    new_y = new_value;
+}
+
+void Agent::set_new_x_vel(double new_value)
+{
+    new_x_vel = new_value;
+}
+
+void Agent::set_new_y_vel(double new_value)
+{
+    new_y_vel = new_value;
 }
 
 // ===========================================================================

@@ -104,7 +104,7 @@ class Prey : public Agent
 
     static int headcount;
 
-    double contact_radius;           // | to be adapted in Agent (?) | 
+    //double contact_radius;           // | to be adapted in Agent (?) | -> done as for now
 
 
 };

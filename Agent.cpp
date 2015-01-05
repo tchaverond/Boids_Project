@@ -10,7 +10,7 @@
 // ===========================================================================
 //                                   Libraries
 // ===========================================================================
-
+#include <cmath>
 
 
 // ===========================================================================
@@ -46,6 +46,7 @@ Agent::Agent(void)             // should only be used as a fictitious Agent to b
 	x_velocity = 0;
 	y_velocity = 0;
 	perception_radius = 0;
+	contact_radius = 0;
 	next = NULL;
 }
 
@@ -61,9 +62,10 @@ Agent::Agent(double init_x, double init_y)
     x_velocity = 0;
     y_velocity = 0;
     perception_radius = 50;
+    contact_radius = 5;
     next = NULL;
 
-	// !!! addition to the output window left to be implemented  !!!
+	// !!! addition to the output window still to be implemented  !!!
 
 	total_headcount ++;
 	printf("Agent created succesfully !\n");
@@ -72,6 +74,7 @@ Agent::Agent(double init_x, double init_y)
 // ===========================================================================
 //                                  Destructor
 // ===========================================================================
+
 Agent::~Agent(void)
 {
 	// !!! unfinished !!!
@@ -81,6 +84,12 @@ Agent::~Agent(void)
 // ===========================================================================
 //                                 Public Methods
 // ===========================================================================
+
+double Agent::distance(Agent* Fellow)
+{
+	double result = ((Fellow->x)-(this->x)) * ((Fellow->x)-(this->x))  +  ((Fellow->y)-(this->y)) * ((Fellow->y)-(this->y));
+	return (sqrt(result));
+}
 
 // ===========================================================================
 //                                Protected Methods
