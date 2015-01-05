@@ -63,7 +63,7 @@ Boid::~Boid(void)
 void Boid::append (Agent* element)
 {
   Agent* i = new Agent();
-  for (i=head; i->get_next()!=NULL; i=i->get_next())
+  for (i=head; i!=NULL; i=i->get_next())
     {}
   i->set_next(element);
   element->set_next(NULL);

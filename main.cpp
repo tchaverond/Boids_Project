@@ -5,6 +5,7 @@
 #include "Prey.h"
 #include "Predator.h"
 #include "Boid.h"
+#include "bwindow.h"
 
 
 int main (int argc, char* argv[])
@@ -45,22 +46,22 @@ int main (int argc, char* argv[])
 
     step = 0.1;
 
-    gamma1 = 5;
-    gamma2 = 2;
-    gamma3 = 3;
+    gamma1 = 0.001;
+    gamma2 = 0.01;
+    gamma3 = 0.3;
 
 
 
     /********************************************          Flock Creation          *******************************************/ 
 
-    Prey* A = new Prey (10,10);
-    Prey* B = new Prey (15,15);
-    Prey* C = new Prey (18,17);
-    Prey* D = new Prey (30,35);
-    Prey* E = new Prey (5,40);
-    Prey* F = new Prey (1,300);
-    Prey* G = new Prey (250,15);
-    Prey* H = new Prey (420,420);
+    Prey* A = new Prey (100,100);
+    Prey* B = new Prey (150,150);
+    Prey* C = new Prey (180,170);
+    Prey* D = new Prey (200,400);
+    Prey* E = new Prey (300,350);
+    Prey* F = new Prey (100,300);
+    Prey* G = new Prey (250,150);
+    Prey* H = new Prey (450,450);
 
     Predator* Marc_Yves = new Predator (150,150);
 
@@ -100,6 +101,13 @@ int main (int argc, char* argv[])
 
 
 
+    /********************************************          Window Creation          *******************************************/ 
+
+    bwindow win(500,500);
+    printf("%d\n",win.init());
+    win.map();
+
+    sleep(1);            // attempt to add a delay in order to wait until the window is ready before drawing sthg in it
 
 
 
@@ -110,8 +118,27 @@ int main (int argc, char* argv[])
 
 
     double i;
-    for (i=0; i<5; i+=step)
+    for (;;)                        // infinite loop
+    //for (i=0; i<100; i+=step)       // non-infinite (aka standard) loop
     {
+
+        int ev = win.parse_event();
+        switch(ev)
+        {
+            case BKPRESS :
+            printf("keypressed\n"); 
+            printf("key : %s\n",win.get_lastkey());
+            break;
+            case BBPRESS:
+            printf("buttonpressed\n"); break;
+            case BEXPOSE:
+            printf("expose\n"); break;
+            case BCONFIGURE:
+            printf("configure\n"); break;
+        }
+
+
+        //win.draw_fsquare(0,0,500,500,0xFFFFFF);      // refreshing the window
 
 
         // epic loop begins here !
@@ -177,8 +204,18 @@ int main (int argc, char* argv[])
         {
             W1->updateAll();
         }
-    
+
+
+        // Paint Loop : used to draw (the position of) each prey
+        for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
+        {
+            win.draw_fsquare(W1->get_x()-2, W1->get_y()-2, W1->get_x()+2, W1->get_y()+2, 0xFF00000);
+        }
+
     }
+
+    /********************************************          End of Main Loop         *******************************************/ 
+
 
 
     // Test Loop
