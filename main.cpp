@@ -44,11 +44,11 @@ int main (int argc, char* argv[])
     width = 500;
     height = 500;
 
-    step = 0.1;
+    step = 0.01;
 
-    gamma1 = 0.001;
-    gamma2 = 0.01;
-    gamma3 = 0.3;
+    gamma1 = 1;
+    gamma2 = 1;
+    gamma3 = 3;
 
 
 
@@ -145,8 +145,19 @@ int main (int argc, char* argv[])
         for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
         {
 
+
+            // re-initialization of stockage variables
+            v1_x_temp = 0;
+            v1_y_temp = 0;
+            v2_x_temp = 0;
+            v2_y_temp = 0;
+            v3_x_temp = 0;
+            v3_y_temp = 0;
+
             for (W2=Flock->get_head(); W2 != NULL; W2=W2->get_next())
             {
+
+
                 if ((W1->get_id() != W2->get_id()) && ((W1->distance(W2)) < W1->get_perception_radius()))  // condition for v1 & v2
                 {
                     k++;                                                               // one more nearby fellow has been found
@@ -211,6 +222,8 @@ int main (int argc, char* argv[])
         {
             win.draw_fsquare(W1->get_x()-2, W1->get_y()-2, W1->get_x()+2, W1->get_y()+2, 0xFF00000);
         }
+
+        sleep(0.1); 
 
     }
 
