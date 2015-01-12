@@ -64,8 +64,8 @@ Agent::Agent(double init_x, double init_y)
     new_y = init_y;
     x_velocity = 0;
     y_velocity = 0;
-    perception_radius = 50;
-    contact_radius = 5;
+    perception_radius = 100;
+    contact_radius = 50;
     next = NULL;
 
 	// !!! addition to the output window still to be implemented  !!!
@@ -104,6 +104,113 @@ void Agent::updateAll(void)
 void Agent::showAll(void)
 {
 	printf("Position : %lg %lg\n Velocity : %lg %lg\n", x, y, x_velocity, y_velocity);
+}
+
+void Agent::applyWind(double height, double width, double step)
+{
+
+	double wind_x = 0;
+	double wind_y = 0;
+
+	/****************************************        First Approach       **************************************************/
+
+	/*double v_angle_temp;
+	double wind_force;
+
+	// calculation of the angle value of the current velocity, to obtain the direction of the prey
+    v_angle_temp = 180/M_PI * atan(new_y_vel/new_x_vel);
+
+    // angle correction : necessary because atan returns a value between -PI/2 & PI/2
+    // but if the prey goes to the left, the return value must be between PI/2 and 3PI/2
+    if (new_x_vel < 0)
+    {
+        v_angle_temp += 180;
+    }
+
+    // little test
+    if ((v_angle_temp < -90) || (v_angle_temp > 270))
+    {
+        printf("Wrong angle !");
+    }
+
+
+    // upper frontier
+    if (y < 10)
+    {
+        wind_force = 10/y;       // wind force is inversely proportional to the prey's distance to the border
+        // if the prey goes right, it has to keep going right, hence we add -PI/4 to obtain the desired angle
+        if (v_angle_temp < 90)             
+        {
+            wind_x += wind_force * cos(v_angle_temp - 45);
+            wind_y += wind_force * sin(v_angle_temp - 45);
+        }
+        // if the prey goes left, it has to keep going left, hence we add PI/4 to obtain the desired angle
+        else
+        {
+            wind_x += wind_force * cos(v_angle_temp + 45);
+            wind_y += wind_force * sin(v_angle_temp + 45);
+        }
+
+    }
+    // lower frontier
+    if (y > height-10)
+    {
+        wind_force = 10/(height-y);
+        if (v_angle_temp < 90)   
+        {
+            wind_x += wind_force * cos(v_angle_temp + 45);
+            wind_y += wind_force * sin(v_angle_temp + 45);
+        }
+        else
+        {
+            wind_x += wind_force * cos(v_angle_temp - 45);
+            wind_y += wind_force * sin(v_angle_temp - 45);
+        }
+
+    }
+    // left frontier
+    if (x < 10)
+    {
+        wind_force = 10/x; 
+        // if the prey goes up
+        if ((v_angle_temp > 0) && (v_angle_temp < 180))
+                 
+        {
+            wind_x += wind_force * cos(v_angle_temp - 45);
+            wind_y += wind_force * sin(v_angle_temp - 45);
+        }
+        else
+        {
+            wind_x += wind_force * cos(v_angle_temp + 45);
+            wind_y += wind_force * sin(v_angle_temp + 45);
+        }
+
+    }
+    // right frontier
+    if (x > width-10)
+    {
+        wind_force = 10/(width-x); 
+        if ((v_angle_temp > 0) && (v_angle_temp < 180))
+                 
+        {
+            wind_x += wind_force * cos(v_angle_temp + 45);
+            wind_y += wind_force * sin(v_angle_temp + 45);
+        }
+        else
+        {
+            wind_x += wind_force * cos(v_angle_temp - 45);
+            wind_y += wind_force * sin(v_angle_temp - 45);
+        }
+
+    }
+
+    new_x_vel += wind_x;
+    new_y_vel += wind_y;
+
+    new_x += step * new_x_vel;
+    new_y += step * new_y_vel;*/
+
+    /****************************************        Second Approach       **************************************************/
 }
 
 // ===========================================================================
