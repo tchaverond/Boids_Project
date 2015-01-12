@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cstdlib>
+#include <cmath>
 
 #include "Agent.h"
 #include "Prey.h"
@@ -28,6 +29,11 @@ int main (int argc, char* argv[])
     double v2_y_temp;              // temporary stockage value for v2_y
     double v3_x_temp;              // temporary stockage value for v3_x
     double v3_y_temp;              // temporary stockage value for v3_y
+    double vw_x_temp;              // temporary stockage value for vw_x
+    double vw_y_temp;              // temporary stockage value for vw_y
+    double v_angle_temp;           // temporary stockage value for angle of velocity
+
+    double wind_force;
 
     double k;                      // number of near (perceived) agents                   
     double kk;                     // number of really (too) near agents
@@ -41,8 +47,8 @@ int main (int argc, char* argv[])
 
     /**************************************         Parameters' Initialization          **************************************/
 
-    width = 500;
-    height = 500;
+    width = 1000;
+    height = 1000;
 
     step = 0.01;
 
@@ -88,6 +94,11 @@ int main (int argc, char* argv[])
     v2_y_temp = 0;
     v3_x_temp = 0;
     v3_y_temp = 0;
+    vw_x_temp = 0;
+    vw_y_temp = 0;
+    v_angle_temp = 0;
+
+    wind_force = 0;
 
     k = 0;
     kk = 0;
@@ -103,7 +114,7 @@ int main (int argc, char* argv[])
 
     /********************************************          Window Creation          *******************************************/ 
 
-    bwindow win(500,500);
+    bwindow win(1000,1000);
     printf("%d\n",win.init());
     win.map();
 
@@ -138,7 +149,7 @@ int main (int argc, char* argv[])
         }
 
 
-        //win.draw_fsquare(0,0,500,500,0xFFFFFF);      // refreshing the window
+        //win.draw_fsquare(0,0,1000,1000,0xFFFFFF);      // refreshing the window
 
 
         // epic loop begins here !
@@ -153,6 +164,10 @@ int main (int argc, char* argv[])
             v2_y_temp = 0;
             v3_x_temp = 0;
             v3_y_temp = 0;
+            vw_x_temp = 0;
+            vw_y_temp = 0;
+            v_angle_temp = 0;
+            wind_force = 0;
 
             for (W2=Flock->get_head(); W2 != NULL; W2=W2->get_next())
             {
@@ -174,7 +189,7 @@ int main (int argc, char* argv[])
                     {
                         kk++;                                                          // one more really near fellow has been found
 
-                        v3_x_temp -= (W2->get_x()) - (W1->get_x());                    // taking into account W2's influence on W1's v3
+                        v3_x_temp += (W2->get_x()) - (W1->get_x());                    // taking into account W2's influence on W1's v3
                         v3_y_temp += (W2->get_y()) - (W1->get_y());
                     }
                 }
@@ -197,11 +212,62 @@ int main (int argc, char* argv[])
 
 
             // !!! wind effects yet to be applied !!!
+            // calculation of the angle value
+            /*v_angle_temp = 180/M_PI * atan(W1->get_y()-W1->get_x());
+            // correction
+            if (W1->get_x() < 0)
+            {
+                v_angle_temp += 180;
+            }
+
+            // upper frontier
+            if (W1->get_y() < 50)
+            {
+                wind_force = 50/W1->get_y();
+                if (v_angle_temp < 90)
+                {
+                    vw_y_temp = wind_force + cos(-45+v_angle_temp);
+                    vw_y_temp = wind_force + cos(-45+v_angle_temp);
+                }
+                else
+                {
+                    vw_y_temp = wind_force + cos(45+v_angle_temp);
+                    vw_y_temp = wind_force + cos(-45+v_angle_temp);
+                }
+
+            }
+            // lower frontier
+            if (W1->get_y() < height-50)
+            {
+                wind_force = 50/(height-W1->get_y());
+                if (v_angle_temp < 90)
+                {
+                    vw_y_temp = wind_force + cos(-45+v_angle_temp);
+                    vw_y_temp = wind_force + cos(-45+v_angle_temp);
+                }
+                else
+                {
+                    vw_y_temp = wind_force + cos(45+v_angle_temp);
+                    vw_y_temp = wind_force + cos(-45+v_angle_temp);
+                }
+
+            }
+            // left frontier
+            if (W1->get_x() < 50)
+            {
+
+            }
+            // right frontier
+            if (W1->get_x() < width-50)
+            {
+
+            }*/
+
 
 
             // calculation and storage of the new velocity and position of W1
-            W1 -> set_new_x_vel (W1->get_x_velocity() + step * (gamma1*v1_x_temp + gamma2*v2_x_temp + gamma3*v3_x_temp));
-            W1 -> set_new_y_vel (W1->get_y_velocity() + step * (gamma1*v1_y_temp + gamma2*v2_y_temp + gamma3*v3_y_temp));
+            W1 -> set_new_x_vel (W1->get_x_velocity() + step * (gamma1*v1_x_temp + gamma2*v2_x_temp + gamma3*v3_x_temp + vw_x_temp));
+            W1 -> set_new_y_vel (W1->get_y_velocity() + step * (gamma1*v1_y_temp + gamma2*v2_y_temp + gamma3*v3_y_temp + vw_y_temp));
 
             W1 -> set_new_x (W1->get_x() + step * W1->get_new_x_vel());
             W1 -> set_new_y (W1->get_y() + step * W1->get_new_y_vel());
