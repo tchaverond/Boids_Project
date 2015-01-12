@@ -65,7 +65,7 @@ Agent::Agent(double init_x, double init_y)
     x_velocity = 0;
     y_velocity = 0;
     perception_radius = 100;
-    contact_radius = 50;
+    contact_radius = 20;
     next = NULL;
 
 	// !!! addition to the output window still to be implemented  !!!

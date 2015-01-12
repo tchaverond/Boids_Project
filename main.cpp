@@ -48,11 +48,11 @@ int main (int argc, char* argv[])
     width = 800;
     height = 800;
 
-    step = 0.01;
+    step = 0.001;
 
-    gamma1 = 1;
-    gamma2 = 1;
-    gamma3 = 3;
+    gamma1 = 10;
+    gamma2 = 10;
+    gamma3 = 10;
 
 
 
