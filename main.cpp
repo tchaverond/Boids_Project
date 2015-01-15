@@ -48,7 +48,7 @@ int main (int argc, char* argv[])
     step = 0.1;
 
     gamma1 = 1;
-    gamma2 = 2;
+    gamma2 = 1.5;
     gamma3 = 7;
 
 
@@ -63,6 +63,9 @@ int main (int argc, char* argv[])
     Prey* F = new Prey (100,300);
     Prey* G = new Prey (250,150);
     Prey* H = new Prey (450,450);
+    Prey* I = new Prey (600,741);
+    Prey* J = new Prey (703,120);
+    Prey* K = new Prey (708,354);
 
     Predator* Marc_Yves = new Predator (150,150);
 
@@ -74,6 +77,9 @@ int main (int argc, char* argv[])
     Flock->append(F);
     Flock->append(G);
     Flock->append(H);
+    Flock->append(I);
+    Flock->append(J);
+    Flock->append(K);
 
     Boid* Enemies = new Boid (Marc_Yves);                 // group of predators
 
@@ -221,7 +227,7 @@ int main (int argc, char* argv[])
         }
 
         
-        win.draw_fsquare(0,0,1000,1000,0xFFFFFF);      // refreshing the window
+        win.draw_fsquare(0,0,width,height,0xFFFFFF);      // refreshing the window
 
         // Paint Loop : used to draw (the position of) each prey
         for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
