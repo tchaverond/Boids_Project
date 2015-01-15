@@ -36,10 +36,7 @@ int main (int argc, char* argv[])
     double k;                      // number of near (perceived) agents                   
     double kk;                     // number of really (too) near agents
 
-
-
-    Boid* Flock = new Boid ();                   // group of preys
-    Boid* Enemies = new Boid ();                 // group of predators
+    
 
 
 
@@ -69,7 +66,7 @@ int main (int argc, char* argv[])
 
     Predator* Marc_Yves = new Predator (150,150);
 
-    Flock->append(A);
+    Boid* Flock = new Boid (A);                           // group of preys
     Flock->append(B);
     Flock->append(C);
     Flock->append(D);
@@ -78,8 +75,7 @@ int main (int argc, char* argv[])
     Flock->append(G);
     Flock->append(H);
 
-
-    Enemies->append(Marc_Yves);
+    Boid* Enemies = new Boid (Marc_Yves);                 // group of predators
 
 
 

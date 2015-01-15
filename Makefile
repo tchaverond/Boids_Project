@@ -12,10 +12,10 @@ Prey.o : Prey.cpp Prey.h
 Predator.o : Predator.cpp Predator.h
 	g++ -g -Wall -c -o Predator.o Predator.cpp
 	
-Boid.o : Boid.h
+Boid.o : Boid.cpp Boid.h
 	g++ -g -Wall -c -o Boid.o Boid.cpp
 
-bwindow.o : bwindow.h
+bwindow.o : bwindow.cpp bwindow.h
 	g++ -g -Wall -c -o bwindow.o bwindow.cpp
 
 clean :

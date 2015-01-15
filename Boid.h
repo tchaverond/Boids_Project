@@ -46,7 +46,7 @@ class Boid
     //                               Constructors
     // =======================================================================
     
-    Boid (void);
+    Boid (Agent*);
 
     // =======================================================================
     //                                Destructor
@@ -89,11 +89,11 @@ class Boid
     // =======================================================================
     //                            Forbidden Constructors
     // =======================================================================
-    /*Boid(void)
+    Boid(void)
     {
       printf("%s:%d: error: call to forbidden constructor.\n", __FILE__, __LINE__);
       exit(EXIT_FAILURE);
-    };*/
+    };
     Boid(const Boid &model)
     {
       printf("%s:%d: error: call to forbidden constructor.\n", __FILE__, __LINE__);
