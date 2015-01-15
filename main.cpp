@@ -48,11 +48,11 @@ int main (int argc, char* argv[])
     width = 800;
     height = 800;
 
-    step = 0.001;
+    step = 0.01;
 
-    gamma1 = 10;
-    gamma2 = 10;
-    gamma3 = 10;
+    gamma1 = 0.15;
+    gamma2 = 0.15;
+    gamma3 = 1;
 
 
 
@@ -239,7 +239,7 @@ int main (int argc, char* argv[])
         /*for ((W1=Flock->get_head())->get_next(); W1 != NULL; W1=W1->get_next())
         {
             W1->showAll();
-        }  */
+        }*/ 
 
     }
 
