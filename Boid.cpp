@@ -87,6 +87,14 @@ void Boid::remove (Agent* element)
     }
 }
 
+Agent* Boid::select (int id)
+{
+  Agent* i = new Agent();
+  for (i=head; i->get_id() != id; i=i->get_next())
+    {}
+  return i;
+}
+
 // ===========================================================================
 //                                Protected Methods
 // ===========================================================================

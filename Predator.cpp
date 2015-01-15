@@ -42,7 +42,7 @@ Predator::Predator(double init_x, double init_y) : Agent (init_x, init_y)
 
 	devour_radius = 4;
 	devour_delay = 100;
-	speed = 20;
+	hunt_speed = 20;
 
 	headcount ++;
 	printf("Predator created succesfully !\n");

@@ -51,11 +51,14 @@ class Predator : public Agent
     // =======================================================================
     //                                Destructor
     // =======================================================================
-    virtual ~Predator(void);
+
+    ~Predator(void);
 
     // =======================================================================
     //                            Accessors: getters
     // =======================================================================
+
+    inline double get_hunt_speed(void) const;
 
     // =======================================================================
     //                            Accessors: setters
@@ -106,8 +109,7 @@ class Predator : public Agent
 
     double devour_radius;
     double devour_delay;
-    double speed;
-
+    double hunt_speed;
 
 };
 
@@ -115,6 +117,11 @@ class Predator : public Agent
 // ===========================================================================
 //                              Getters' definitions
 // ===========================================================================
+
+double Predator::get_hunt_speed(void) const
+{
+    return hunt_speed;
+}
 
 // ===========================================================================
 //                              Setters' definitions

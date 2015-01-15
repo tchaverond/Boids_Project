@@ -29,8 +29,15 @@ int main (int argc, char* argv[])
     double v2_y_temp;              // temporary stockage value for v2_y
     double v3_x_temp;              // temporary stockage value for v3_x
     double v3_y_temp;              // temporary stockage value for v3_y
-    double vw_x_temp;              // temporary stockage value for vw_x
-    double vw_y_temp;              // temporary stockage value for vw_y
+    double v4_x_temp;              // temporary stockage value for v4_x
+    double v4_y_temp;              // temporary stockage value for v4_y
+    double vp_x_temp;              // temporary stockage value for vp_x
+    double vp_y_temp;              // temporary stockage value for vp_y
+    double vp_temp;                // temporary stockage value for vp
+
+    double easiestprey_id;               // temporary stockage value of the id of the nearest prey for the predator to eat
+    double prey_distance;                // temporary stockage value of the distance prey-predator
+    Agent* easiestprey = new Agent();    // temporary stockage value of the nearest prey
 
 
     double k;                      // number of near (perceived) agents                   
@@ -88,15 +95,16 @@ int main (int argc, char* argv[])
     double j;
     for (j=0; j<Flock_size; j++)
     {
-        Flock->append(new Prey ((int)800*(((double)rand())/RAND_MAX), (int)800*(((double)rand())/RAND_MAX)));
+        Flock->append(new Prey (800*(((double)rand())/RAND_MAX), 800*(((double)rand())/RAND_MAX)));
     }
 
     Boid* Enemies = new Boid (Marc_Yves);                 // group of predators
 
 
 
-    Agent* W1 = new Agent();       // the Wanderers Wi will browse through the flock
-    Agent* W2 = new Agent();       // W1 is the current Agent, W2 is a fellow of W1
+    Agent* W1 = new Agent();           // the Wanderers Wi will browse through the flock
+    Agent* W2 = new Agent();           // W1 is the current Agent, W2 is a fellow of W1
+    Predator* WP = new Predator();     // Wanderer of the predators
 
     v1_x_temp = 0;
     v1_y_temp = 0;
@@ -104,8 +112,11 @@ int main (int argc, char* argv[])
     v2_y_temp = 0;
     v3_x_temp = 0;
     v3_y_temp = 0;
-    vw_x_temp = 0;
-    vw_y_temp = 0;
+    v4_x_temp = 0;
+    v4_y_temp = 0;
+
+    easiestprey_id = -1;
+    prey_distance = 1000;
 
     k = 0;
     kk = 0;
@@ -135,8 +146,8 @@ int main (int argc, char* argv[])
 
 
 
-    double i;
     for (;;)                        // infinite loop
+    //double i;
     //for (i=0; i<100; i+=step)       // non-infinite (aka standard) loop
     {
 
@@ -159,7 +170,9 @@ int main (int argc, char* argv[])
         
 
 
-        // epic loop begins here !
+        /**********************************************         Prey Loop           *********************************************/
+
+        // TODO : predator's influence on preys
         for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
         {
 
@@ -171,8 +184,8 @@ int main (int argc, char* argv[])
             v2_y_temp = 0;
             v3_x_temp = 0;
             v3_y_temp = 0;
-            vw_x_temp = 0;
-            vw_y_temp = 0;
+            v4_x_temp = 0;
+            v4_y_temp = 0;
 
             for (W2=Flock->get_head(); W2 != NULL; W2=W2->get_next())
             {
@@ -227,22 +240,96 @@ int main (int argc, char* argv[])
            
             // Wind Effect
             W1 -> applyWind(height,width,step);
+        }
+
+
+
+
+
+        /*********************************************         Predator Loop           ********************************************/
+
+        for (WP=Enemies->get_head(); WP != NULL; WP=WP->get_next())
+        {
+
+            // re-initialization of stockage variables
+            vp_x_temp = 0;
+            vp_y_temp = 0;
+            easiestprey_id = -1;
+            prey_distance = 1000;
+
+            for (W2=Flock->get_head(); W2 != NULL; W2=W2->get_next())
+            {
+                
+                // getting which prey is the nearest one
+                if ((WP->distance(W2) < WP->get_perception_radius()) && (WP->distance(W2) < prey_distance))
+                {
+                    prey_distance = WP->distance(W2);
+                    easiestprey_id = W2->get_id(); 
+                }
+            }
+
+            // if one prey has been noticed by the predator
+            if (easiestprey_id != -1)
+            {
+                easiestprey = Flock->select(easiestprey_id);
+
+                // getting direction of the nearest prey
+                vp_x_temp = WP->get_x() - easiestprey->get_x();
+                vp_y_temp = WP->get_y() - easiestprey->get_y();
+
+                // going towards it at the required speed
+                vp_temp = sqrt((vp_x_temp * vp_x_temp) + (vp_y_temp * vp_y_temp));
+                vp_x_temp /= vp_temp/WP->get_hunt_speed();                  // TODO : DUPLICATE HUNT_SPEED INTO AGENT TO MAKE IT COMPILE (?)
+                vp_y_temp /= vp_temp/WP->get_hunt_speed();  
+            }
+
+            // the predator moves randomly across the world
+            else
+            {
+                vp_x_temp = 2*((((double)rand())/(RAND_MAX))-1);
+                vp_y_temp = 2*((((double)rand())/(RAND_MAX))-1);
+            }
+
+            // calculation and storage of the new velocity and position of W1
+            WP -> set_new_x_vel (vp_x_temp);
+            WP -> set_new_y_vel (vp_y_temp);  
+
+            WP -> set_new_x (W1->get_x() + step * WP->get_new_x_vel());
+            WP -> set_new_y (W1->get_y() + step * WP->get_new_y_vel());
 
         }
 
-        // Update Loop : used to update position and velocity values, once they've been calculated for each prey
+
+
+
+        /**********************************************         Update Loops           *********************************************/
+
         for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
         {
             W1->updateAll();
         }
 
+        for (W1=Enemies->get_head(); W1 != NULL; W1=W1->get_next())
+        {
+            W1->updateAll();
+        }
+
+    
         
+
+
+        /***********************************************         Paint Loops           **********************************************/
+
         win.draw_fsquare(0,0,width,height,0xFFFFFF);      // refreshing the window
 
-        // Paint Loop : used to draw (the position of) each prey
         for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
         {
             win.draw_fsquare(W1->get_x()-2, W1->get_y()-2, W1->get_x()+2, W1->get_y()+2, 0x228B22);
+        }
+
+        for (W1=Enemies->get_head(); W1 != NULL; W1=W1->get_next())
+        {
+            win.draw_fsquare(W1->get_x()-2, W1->get_y()-2, W1->get_x()+2, W1->get_y()+2, 0xFF0000);
         }
 
         //sleep(0.1); 
@@ -255,15 +342,17 @@ int main (int argc, char* argv[])
 
     }
 
-    /********************************************          End of Main Loop         *******************************************/ 
+    /***************************************************************************************************************************
+    *********************************************          End Of Main Loop         ********************************************
+    ***************************************************************************************************************************/
 
 
 
     // Test Loop
-    for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
+    /*for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
     {
         W1->showAll();
     }
 
-	return 0;
+	return 0;*/
 }

@@ -75,6 +75,7 @@ class Boid
 
     void append (Agent*);
     void remove (Agent*);
+    Agent* select (int);
 
     // =======================================================================
     //                             Public Attributes
