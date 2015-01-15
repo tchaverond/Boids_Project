@@ -46,6 +46,8 @@ Agent::Agent(void)             // should only be used as a fictitious Agent to b
 	new_y = 0;
 	x_velocity = 0;
 	y_velocity = 0;
+    new_x_vel = 0;
+    new_y_vel = 0;
 	perception_radius = 0;
 	contact_radius = 0;
 	next = NULL;
@@ -64,7 +66,9 @@ Agent::Agent(double init_x, double init_y)
     new_y = init_y;
     x_velocity = 0;
     y_velocity = 0;
-    perception_radius = 200;
+    new_x_vel = 0;
+    new_y_vel = 0;
+    perception_radius = 150;
     contact_radius = 10;
     next = NULL;
 
@@ -113,7 +117,7 @@ void Agent::applyWind(double height, double width, double step)
 	double wind_y = 0;
     double max_speed = 0.2;
     double speed;
-    double wind_force = 0.001;
+    double wind_force = 0.005;
 
 	/****************************************        First Approach       **************************************************/
 

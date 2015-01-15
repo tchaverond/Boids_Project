@@ -46,13 +46,13 @@ int main (int argc, char* argv[])
     width = 800;
     height = 800;
 
-    step = 0.2;
+    step = 0.6;
 
-    gamma1 = 2;
-    gamma2 = 3;
-    gamma3 = 7;
+    gamma1 = 5;
+    gamma2 = 7;
+    gamma3 = 5;
 
-    Flock_size = 100;
+    Flock_size = 200;
 
 
 
@@ -242,7 +242,7 @@ int main (int argc, char* argv[])
         // Paint Loop : used to draw (the position of) each prey
         for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
         {
-            win.draw_fsquare(W1->get_x()-2, W1->get_y()-2, W1->get_x()+2, W1->get_y()+2, 0xFF0000);
+            win.draw_fsquare(W1->get_x()-2, W1->get_y()-2, W1->get_x()+2, W1->get_y()+2, 0x228B22);
         }
 
         //sleep(0.1); 
