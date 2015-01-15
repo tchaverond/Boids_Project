@@ -48,17 +48,17 @@ int main (int argc, char* argv[])
     width = 800;
     height = 800;
 
-    step = 0.01;
+    step = 0.1;
 
-    gamma1 = 0.15;
-    gamma2 = 0.15;
-    gamma3 = 1;
+    gamma1 = 1;
+    gamma2 = 2;
+    gamma3 = 7;
 
 
 
     /********************************************          Flock Creation          *******************************************/ 
 
-    Prey* A = new Prey (100,100);
+    Prey* A = new Prey (80,500);
     Prey* B = new Prey (150,150);
     Prey* C = new Prey (180,170);
     Prey* D = new Prey (200,400);
@@ -225,7 +225,7 @@ int main (int argc, char* argv[])
         }
 
         
-        //win.draw_fsquare(0,0,1000,1000,0xFFFFFF);      // refreshing the window
+        win.draw_fsquare(0,0,1000,1000,0xFFFFFF);      // refreshing the window
 
         // Paint Loop : used to draw (the position of) each prey
         for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
@@ -233,7 +233,7 @@ int main (int argc, char* argv[])
             win.draw_fsquare(W1->get_x()-2, W1->get_y()-2, W1->get_x()+2, W1->get_y()+2, 0xFF0000);
         }
 
-        sleep(0.1); 
+        //sleep(0.1); 
 
         // Test Loop
         /*for ((W1=Flock->get_head())->get_next(); W1 != NULL; W1=W1->get_next())

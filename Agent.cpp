@@ -111,8 +111,9 @@ void Agent::applyWind(double height, double width, double step)
 
 	double wind_x = 0;
 	double wind_y = 0;
-    double max_speed = 1;
+    double max_speed = 0.4;
     double speed;
+    double wind_force = 0.01;
 
 	/****************************************        First Approach       **************************************************/
 
@@ -217,25 +218,25 @@ void Agent::applyWind(double height, double width, double step)
     // upper frontier
     if (y < 50)
     {
-        wind_y = 5/(y+0.1);
+        wind_y = wind_force/(y+0.1);
     }
 
     // lower frontier
     if (y > height-50)
     {
-        wind_y = -5/(height-y+0.1);
+        wind_y = -wind_force/(height-y+0.1);
     }
 
     // left frontier
     if (x < 50)
     {
-        wind_x = 5/(x+0.1);
+        wind_x = wind_force/(x+0.1);
     }
 
     // right frontier
     if (x > height-50)
     {
-        wind_x = -5/(width-x+0.1);
+        wind_x = -wind_force/(width-x+0.1);
     }
 
     new_x_vel += wind_x;
