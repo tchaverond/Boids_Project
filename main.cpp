@@ -36,8 +36,9 @@ int main (int argc, char* argv[])
     double k;                      // number of near (perceived) agents                   
     double kk;                     // number of really (too) near agents
 
-    
+    int Flock_size;
 
+    
 
 
     /**************************************         Parameters' Initialization          **************************************/
@@ -45,19 +46,22 @@ int main (int argc, char* argv[])
     width = 800;
     height = 800;
 
-    step = 0.1;
+    step = 0.2;
 
-    gamma1 = 1;
-    gamma2 = 1.5;
+    gamma1 = 2;
+    gamma2 = 3;
     gamma3 = 7;
+
+    Flock_size = 100;
+
 
 
 
     /********************************************          Flock Creation          *******************************************/ 
 
-    Prey* A = new Prey (80,500);
-    Prey* B = new Prey (150,150);
-    Prey* C = new Prey (180,170);
+    Prey* A = new Prey (700,700);
+    /*Prey* B = new Prey (720,720);
+    Prey* C = new Prey (740,740);
     Prey* D = new Prey (200,400);
     Prey* E = new Prey (300,350);
     Prey* F = new Prey (100,300);
@@ -65,12 +69,12 @@ int main (int argc, char* argv[])
     Prey* H = new Prey (450,450);
     Prey* I = new Prey (600,741);
     Prey* J = new Prey (703,120);
-    Prey* K = new Prey (708,354);
+    Prey* K = new Prey (708,354);*/
 
     Predator* Marc_Yves = new Predator (150,150);
 
     Boid* Flock = new Boid (A);                           // group of preys
-    Flock->append(B);
+    /*Flock->append(B);
     Flock->append(C);
     Flock->append(D);
     Flock->append(E);
@@ -79,7 +83,13 @@ int main (int argc, char* argv[])
     Flock->append(H);
     Flock->append(I);
     Flock->append(J);
-    Flock->append(K);
+    Flock->append(K);*/
+    srand(42);
+    double j;
+    for (j=0; j<Flock_size; j++)
+    {
+        Flock->append(new Prey ((int)800*(((double)rand())/RAND_MAX), (int)800*(((double)rand())/RAND_MAX)));
+    }
 
     Boid* Enemies = new Boid (Marc_Yves);                 // group of predators
 
