@@ -259,6 +259,11 @@ void Agent::applyWind(double height, double width, double step)
 
 }
 
+void huntPrey(Agent* victim)
+{
+    printf("This shouldn't be printed ");
+}
+
 // ===========================================================================
 //                                Protected Methods
 // ===========================================================================

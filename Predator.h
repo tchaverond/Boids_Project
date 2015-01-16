@@ -15,7 +15,7 @@
 // ===========================================================================
 #include <cstdio>
 #include <cstdlib>
-
+#include <cmath>
 
 
 // ===========================================================================
@@ -45,8 +45,10 @@ class Predator : public Agent
     // =======================================================================
     //                               Constructors
     // =======================================================================
+
+    Predator(void);              // should only be used as a fictitious Predator to apply specific methods to
     
-    Predator (double, double);
+    Predator(double, double);
 
     // =======================================================================
     //                                Destructor
@@ -57,8 +59,6 @@ class Predator : public Agent
     // =======================================================================
     //                            Accessors: getters
     // =======================================================================
-
-    inline double get_hunt_speed(void) const;
 
     // =======================================================================
     //                            Accessors: setters
@@ -71,6 +71,8 @@ class Predator : public Agent
     // =======================================================================
     //                              Public Methods
     // =======================================================================
+
+    void huntPrey(Agent*);
 
     // =======================================================================
     //                             Public Attributes
@@ -85,11 +87,11 @@ class Predator : public Agent
     // =======================================================================
     //                            Forbidden Constructors
     // =======================================================================
-    Predator(void)
+    /*Predator(void)
     {
       printf("%s:%d: error: call to forbidden constructor.\n", __FILE__, __LINE__);
       exit(EXIT_FAILURE);
-    };
+    };*/
     Predator(const Predator &model)
     {
       printf("%s:%d: error: call to forbidden constructor.\n", __FILE__, __LINE__);
@@ -117,11 +119,6 @@ class Predator : public Agent
 // ===========================================================================
 //                              Getters' definitions
 // ===========================================================================
-
-double Predator::get_hunt_speed(void) const
-{
-    return hunt_speed;
-}
 
 // ===========================================================================
 //                              Setters' definitions

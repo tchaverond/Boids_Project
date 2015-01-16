@@ -109,6 +109,8 @@ class Agent
 
     void applyWind(double, double, double);
 
+    virtual void huntPrey(Agent*);
+
     // =======================================================================
     //                             Public Attributes
     // =======================================================================

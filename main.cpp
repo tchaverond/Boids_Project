@@ -33,7 +33,6 @@ int main (int argc, char* argv[])
     double v4_y_temp;              // temporary stockage value for v4_y
     double vp_x_temp;              // temporary stockage value for vp_x
     double vp_y_temp;              // temporary stockage value for vp_y
-    double vp_temp;                // temporary stockage value for vp
 
     double easiestprey_id;               // temporary stockage value of the id of the nearest prey for the predator to eat
     double prey_distance;                // temporary stockage value of the distance prey-predator
@@ -104,7 +103,7 @@ int main (int argc, char* argv[])
 
     Agent* W1 = new Agent();           // the Wanderers Wi will browse through the flock
     Agent* W2 = new Agent();           // W1 is the current Agent, W2 is a fellow of W1
-    Predator* WP = new Predator();     // Wanderer of the predators
+    Agent* WP = new Agent();           // Wanderer of the predators
 
     v1_x_temp = 0;
     v1_y_temp = 0;
@@ -256,6 +255,7 @@ int main (int argc, char* argv[])
             vp_y_temp = 0;
             easiestprey_id = -1;
             prey_distance = 1000;
+            easiestprey = NULL;
 
             for (W2=Flock->get_head(); W2 != NULL; W2=W2->get_next())
             {
@@ -272,28 +272,20 @@ int main (int argc, char* argv[])
             if (easiestprey_id != -1)
             {
                 easiestprey = Flock->select(easiestprey_id);
-
-                // getting direction of the nearest prey
-                vp_x_temp = WP->get_x() - easiestprey->get_x();
-                vp_y_temp = WP->get_y() - easiestprey->get_y();
-
-                // going towards it at the required speed
-                vp_temp = sqrt((vp_x_temp * vp_x_temp) + (vp_y_temp * vp_y_temp));
-                vp_x_temp /= vp_temp/WP->get_hunt_speed();                  // TODO : DUPLICATE HUNT_SPEED INTO AGENT TO MAKE IT COMPILE (?)
-                vp_y_temp /= vp_temp/WP->get_hunt_speed();  
+                Predator* WP2 = new Predator();
+                WP2 -> huntPrey(easiestprey);                // setting predator velocity according to the location of the easiest prey
+                WP = (Agent*) WP2;
+                delete(WP2);
             }
 
-            // the predator moves randomly across the world
+            // else the predator moves randomly across the world
             else
             {
-                vp_x_temp = 2*((((double)rand())/(RAND_MAX))-1);
-                vp_y_temp = 2*((((double)rand())/(RAND_MAX))-1);
+                WP -> set_new_x_vel (2*((((double)rand())/(RAND_MAX))-1));
+                WP -> set_new_y_vel (2*((((double)rand())/(RAND_MAX))-1));  
             }
 
-            // calculation and storage of the new velocity and position of W1
-            WP -> set_new_x_vel (vp_x_temp);
-            WP -> set_new_y_vel (vp_y_temp);  
-
+            // calculation and storage of the new position of WP
             WP -> set_new_x (W1->get_x() + step * WP->get_new_x_vel());
             WP -> set_new_y (W1->get_y() + step * WP->get_new_y_vel());
 
@@ -309,9 +301,9 @@ int main (int argc, char* argv[])
             W1->updateAll();
         }
 
-        for (W1=Enemies->get_head(); W1 != NULL; W1=W1->get_next())
+        for (WP=Enemies->get_head(); WP != NULL; WP=WP->get_next())
         {
-            W1->updateAll();
+            WP->updateAll();
         }
 
     
@@ -327,9 +319,9 @@ int main (int argc, char* argv[])
             win.draw_fsquare(W1->get_x()-2, W1->get_y()-2, W1->get_x()+2, W1->get_y()+2, 0x228B22);
         }
 
-        for (W1=Enemies->get_head(); W1 != NULL; W1=W1->get_next())
+        for (WP=Enemies->get_head(); WP != NULL; WP=WP->get_next())
         {
-            win.draw_fsquare(W1->get_x()-2, W1->get_y()-2, W1->get_x()+2, W1->get_y()+2, 0xFF0000);
+            win.draw_fsquare(WP->get_x()-2, WP->get_y()-2, WP->get_x()+2, WP->get_y()+2, 0xFF0000);
         }
 
         //sleep(0.1); 
