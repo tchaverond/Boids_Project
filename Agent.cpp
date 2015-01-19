@@ -180,22 +180,22 @@ void Agent::applyWind(double height, double width, double step)
     // shouldn't be necessary, just one more security
     if (new_x < 0)
     {
-        new_x = 0;
+        new_x = 5;
     }
 
     if (new_x > width)
     {
-        new_x = width;
+        new_x = width-5;
     }
 
     if (new_y < 0)
     {
-        new_y = 0;
+        new_y = 5;
     }
 
     if (new_y > height)
     {
-        new_y = height;
+        new_y = height-5;
     }
 
 }

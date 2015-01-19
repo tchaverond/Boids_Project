@@ -31,8 +31,6 @@ int main (int argc, char* argv[])
     double v3_y_temp;              // temporary stockage value for v3_y
     double v4_x_temp;              // temporary stockage value for v4_x
     double v4_y_temp;              // temporary stockage value for v4_y
-    double vp_x_temp;              // temporary stockage value for vp_x
-    double vp_y_temp;              // temporary stockage value for vp_y
 
     int easiestprey_id;                  // temporary stockage value of the id of the nearest prey for the predator to eat
     double prey_distance;                // temporary stockage value of the distance prey-predator
@@ -57,6 +55,7 @@ int main (int argc, char* argv[])
     gamma1 = 5;
     gamma2 = 7;
     gamma3 = 20;
+    gamma4 = 10;
 
     Flock_size = 200;
 
@@ -233,15 +232,19 @@ int main (int argc, char* argv[])
             // predator's influence on preys
             for (WP=Enemies->get_head(); WP != NULL; WP=WP->get_next())
             {
-                
+                if (W1->distance(WP) < W1->get_perception_radius())
+                {
+                    v4_x_temp -= ((WP->get_x()-W1->get_x()) / (sqrt(((WP->get_x()-W1->get_x()) * (WP->get_x()-W1->get_x())) + ((WP->get_y()-W1->get_y()) * (WP->get_y()-W1->get_y())))));
+                    v4_y_temp -= ((WP->get_y()-W1->get_y()) / (sqrt(((WP->get_x()-W1->get_x()) * (WP->get_x()-W1->get_x())) + ((WP->get_y()-W1->get_y()) * (WP->get_y()-W1->get_y())))));
+                }
             }
 
 
 
 
             // calculation and storage of the new velocity and position of W1
-            W1 -> set_new_x_vel (W1->get_x_velocity() + step * (gamma1*v1_x_temp + gamma2*v2_x_temp + gamma3*v3_x_temp));
-            W1 -> set_new_y_vel (W1->get_y_velocity() + step * (gamma1*v1_y_temp + gamma2*v2_y_temp + gamma3*v3_y_temp));
+            W1 -> set_new_x_vel (W1->get_x_velocity() + step * (gamma1*v1_x_temp + gamma2*v2_x_temp + gamma3*v3_x_temp + gamma4*v4_x_temp));
+            W1 -> set_new_y_vel (W1->get_y_velocity() + step * (gamma1*v1_y_temp + gamma2*v2_y_temp + gamma3*v3_y_temp + gamma4*v4_y_temp));
 
             W1 -> set_new_x (W1->get_x() + step * W1->get_new_x_vel());
             W1 -> set_new_y (W1->get_y() + step * W1->get_new_y_vel());
@@ -261,8 +264,6 @@ int main (int argc, char* argv[])
         {
 
             // re-initialization of stockage variables
-            vp_x_temp = 0;
-            vp_y_temp = 0;
             easiestprey_id = -1;
             prey_distance = 1000;
             easiestprey = NULL;
@@ -286,7 +287,7 @@ int main (int argc, char* argv[])
                 printf("%d\n",easiestprey_id);
             }
 
-            // else the predator moves randomly across the world
+            // else the predator moves randomly across the world   -> RANDOM CHARACTER TO BE DONE
             else
             {
                 //WP -> set_new_x_vel ((2*(((double)rand())/(RAND_MAX)))-1);
