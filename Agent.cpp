@@ -52,7 +52,7 @@ Agent::Agent(void)             // should only be used as a fictitious Agent to b
 	contact_radius = 0;
 	next = NULL;
     devour_radius = 0;
-    devour_delay = 0;
+    devour_time = 100000;
     hunt_speed = 0;
 }
 
@@ -79,12 +79,12 @@ Agent::Agent(double init_x, double init_y, int type)
     if (type == 1)
     {
         devour_radius = 4;
-        devour_delay = 100;
-        hunt_speed = 5;
+        hunt_speed = 1;
+        devour_time = 100000;
     } else {
         devour_radius = -1;
-        devour_delay = -1;
         hunt_speed = -1;
+        devour_time = 100000;
     }
 
 	printf("Agent created succesfully !\n");
@@ -130,7 +130,7 @@ void Agent::applyWind(double height, double width, double step)
 	double wind_y = 0;
     double max_speed = 0.2;
     double speed;
-    double wind_force = 0.005;
+    double wind_force = 0.03;
 
 	/****************************************        First Approach       **************************************************/
 
@@ -215,6 +215,26 @@ void Agent::huntPrey(Agent* victim)
     } else {
         printf("Error : Calling huntPrey method on a Prey, not on a Predator !\n");
     }
+}
+
+void Agent::lunchTime(void)
+{
+    if (type_id == 1)
+    {
+        new_x_vel = 0;
+        new_y_vel = 0;
+        devour_time = 0;
+        printf("Miam !\n");
+
+    } else {
+        printf("Error : Calling lunchTime method on a Prey, not on a Predator !\n");
+    }
+}
+
+void Agent::lunchProgress(void)
+{
+
+    devour_time ++;
 }
 
 // ===========================================================================

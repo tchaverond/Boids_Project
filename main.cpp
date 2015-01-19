@@ -22,6 +22,7 @@ int main (int argc, char* argv[])
     double gamma4;
     double mu;
     double nmax;
+    double devour_delay;           // time that a predator spend to eat a prey
 
     double v1_x_temp;              // temporary stockage value for v1_x
     double v1_y_temp;              // temporary stockage value for v1_y
@@ -55,7 +56,9 @@ int main (int argc, char* argv[])
     gamma1 = 5;
     gamma2 = 7;
     gamma3 = 20;
-    gamma4 = 10;
+    gamma4 = 0.4;
+
+    devour_delay = 1000;
 
     Flock_size = 200;
 
@@ -268,39 +271,60 @@ int main (int argc, char* argv[])
             prey_distance = 1000;
             easiestprey = NULL;
 
-            for (W2=Flock->get_head(); W2 != NULL; W2=W2->get_next())
+
+            // providing the predator isn't currently eating a prey
+            if (WP->get_devour_time() > devour_delay)
             {
-                
-                // getting which prey is the nearest one
-                if ((WP->distance(W2) < WP->get_perception_radius()) && (WP->distance(W2) < prey_distance))
+
+                for (W2=Flock->get_head(); W2 != NULL; W2=W2->get_next())
                 {
-                    prey_distance = WP->distance(W2);
-                    easiestprey_id = W2->get_id(); 
+                    
+                    // getting which prey is the nearest one
+                    if ((WP->distance(W2) < WP->get_perception_radius()) && (WP->distance(W2) < prey_distance))
+                    {
+                        prey_distance = WP->distance(W2);
+                        easiestprey_id = W2->get_id(); 
+                    }
                 }
-            }
 
-            // if one prey has been noticed by the predator
-            if (easiestprey_id != -1)
-            {
-                easiestprey = Flock->select(easiestprey_id);
-                WP -> huntPrey(easiestprey);                 // setting predator velocity according to the location of the easiest prey
-                printf("%d\n",easiestprey_id);
-            }
+                // if the prey is near enough to be eaten
+                if (prey_distance < WP->get_devour_radius())
+                {
+                    Flock -> remove(Flock->select(easiestprey_id));
+                    WP -> lunchTime();
+                } 
+                else 
+                {
+                    // if one prey has been noticed by the predator
+                    if (easiestprey_id != -1)
+                    {
+                        easiestprey = Flock->select(easiestprey_id);
+                        WP -> huntPrey(easiestprey);                 // setting predator velocity according to the location of the easiest prey
+                        //printf("%d\n",easiestprey_id);
+                    }
 
-            // else the predator moves randomly across the world   -> RANDOM CHARACTER TO BE DONE
+                    // else the predator moves randomly across the world   -> RANDOM CHARACTER TO BE DONE
+                    else
+                    {
+                        WP -> set_new_x_vel (5*((2*(((double)rand())/(RAND_MAX)))-1));
+                        WP -> set_new_y_vel (5*((2*(((double)rand())/(RAND_MAX)))-1));
+                    }
+
+                }
+
+                // calculation and storage of the new position of WP
+                WP -> set_new_x (WP->get_x() + step * WP->get_new_x_vel());
+                WP -> set_new_y (WP->get_y() + step * WP->get_new_y_vel());
+
+                WP -> applyWind(height,width,step);
+
+            }
+            // if this predator is busy eating a prey
             else
             {
-                //WP -> set_new_x_vel ((2*(((double)rand())/(RAND_MAX)))-1);
-                //WP -> set_new_y_vel ((2*(((double)rand())/(RAND_MAX)))-1);
-                WP -> set_new_x_vel (0);  
-                WP -> set_new_y_vel (0);
+                WP -> lunchProgress();      // it carries on eating it
             }
-
-            // calculation and storage of the new position of WP
-            WP -> set_new_x (WP->get_x() + step * WP->get_new_x_vel());
-            WP -> set_new_y (WP->get_y() + step * WP->get_new_y_vel());
-
-            WP -> applyWind(height,width,step);
+            
 
         }
 
@@ -337,7 +361,7 @@ int main (int argc, char* argv[])
             win.draw_fsquare(WP->get_x()-2, WP->get_y()-2, WP->get_x()+2, WP->get_y()+2, 0xFF0000);
         }
 
-        //sleep(0.1); 
+        //usleep(1000); 
 
         // Test Loop
         /*for ((W1=Flock->get_head())->get_next(); W1 != NULL; W1=W1->get_next())

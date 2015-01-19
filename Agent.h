@@ -79,6 +79,10 @@ class Agent
 
     inline double get_new_y_vel(void) const;
 
+    inline double get_devour_radius(void) const;
+
+    inline double get_devour_time(void) const;
+
     // =======================================================================
     //                            Accessors: setters
     // =======================================================================
@@ -110,6 +114,10 @@ class Agent
     void applyWind(double, double, double);
 
     void huntPrey(Agent*);
+
+    void lunchTime(void);
+
+    void lunchProgress(void);
 
     // =======================================================================
     //                             Public Attributes
@@ -164,7 +172,7 @@ class Agent
 
     // Predator-specific variables
     double devour_radius;
-    double devour_delay;
+    double devour_time;
     double hunt_speed;
 
     Agent* next;                    // for Linked List purposes
@@ -224,6 +232,16 @@ double Agent::get_new_x_vel(void) const
 double Agent::get_new_y_vel(void) const
 {
     return new_y_vel;
+}
+
+double Agent::get_devour_radius(void) const
+{
+    return devour_radius;
+}
+
+double Agent::get_devour_time(void) const
+{
+    return devour_time;
 }
 
 
