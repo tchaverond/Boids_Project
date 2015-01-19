@@ -48,17 +48,17 @@ int main (int argc, char* argv[])
 
     /**************************************         Parameters' Initialization          **************************************/
 
-    width = 800;
-    height = 800;
+    width = 1100;
+    height = 900;
 
     step = 0.6;
 
     gamma1 = 5;
     gamma2 = 7;
     gamma3 = 20;
-    gamma4 = 0.4;
+    gamma4 = 0.3;
 
-    devour_delay = 1000;
+    devour_delay = 2000;
 
     Flock_size = 200;
 
@@ -99,7 +99,7 @@ int main (int argc, char* argv[])
     double j;
     for (j=0; j<Flock_size; j++)
     {
-        Flock->append(new Agent (800*(((double)rand())/RAND_MAX), 800*(((double)rand())/RAND_MAX), 0));
+        Flock->append(new Agent (width*(((double)rand())/RAND_MAX), height*(((double)rand())/RAND_MAX), 0));
     }
 
     Boid* Enemies = new Boid (Marc_Yves);                 // group of predators
@@ -306,8 +306,8 @@ int main (int argc, char* argv[])
                     // else the predator moves randomly across the world   -> RANDOM CHARACTER TO BE DONE
                     else
                     {
-                        WP -> set_new_x_vel (5*((2*(((double)rand())/(RAND_MAX)))-1));
-                        WP -> set_new_y_vel (5*((2*(((double)rand())/(RAND_MAX)))-1));
+                        WP -> set_new_x_vel (WP->get_x_velocity() + step* (5*((2*(((double)rand())/(RAND_MAX)))-1)));
+                        WP -> set_new_y_vel (WP->get_y_velocity() + step* (5*((2*(((double)rand())/(RAND_MAX)))-1)));
                     }
 
                 }
@@ -361,7 +361,7 @@ int main (int argc, char* argv[])
             win.draw_fsquare(WP->get_x()-2, WP->get_y()-2, WP->get_x()+2, WP->get_y()+2, 0xFF0000);
         }
 
-        //usleep(1000); 
+        usleep(1000); 
 
         // Test Loop
         /*for ((W1=Flock->get_head())->get_next(); W1 != NULL; W1=W1->get_next())

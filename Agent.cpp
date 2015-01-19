@@ -79,7 +79,7 @@ Agent::Agent(double init_x, double init_y, int type)
     if (type == 1)
     {
         devour_radius = 4;
-        hunt_speed = 1;
+        hunt_speed = 0.8;
         devour_time = 100000;
     } else {
         devour_radius = -1;
