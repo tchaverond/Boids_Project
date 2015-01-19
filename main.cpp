@@ -3,8 +3,8 @@
 #include <cmath>
 
 #include "Agent.h"
-#include "Prey.h"
-#include "Predator.h"
+//#include "Prey.h"
+//#include "Predator.h"
 #include "Boid.h"
 #include "bwindow.h"
 
@@ -34,7 +34,7 @@ int main (int argc, char* argv[])
     double vp_x_temp;              // temporary stockage value for vp_x
     double vp_y_temp;              // temporary stockage value for vp_y
 
-    double easiestprey_id;               // temporary stockage value of the id of the nearest prey for the predator to eat
+    int easiestprey_id;                  // temporary stockage value of the id of the nearest prey for the predator to eat
     double prey_distance;                // temporary stockage value of the distance prey-predator
     Agent* easiestprey = new Agent();    // temporary stockage value of the nearest prey
 
@@ -56,16 +56,19 @@ int main (int argc, char* argv[])
 
     gamma1 = 5;
     gamma2 = 7;
-    gamma3 = 5;
+    gamma3 = 20;
 
     Flock_size = 200;
 
 
 
 
-    /********************************************          Flock Creation          *******************************************/ 
+    /********************************************          Flock Creation          *******************************************/
 
-    Prey* A = new Prey (700,700);
+    // type_id = 0 <=> Agent is a prey
+    // type_id = 1 <=> Agent is a predator 
+
+    Agent* A = new Agent (700,700,0);
     /*Prey* B = new Prey (720,720);
     Prey* C = new Prey (740,740);
     Prey* D = new Prey (200,400);
@@ -77,7 +80,7 @@ int main (int argc, char* argv[])
     Prey* J = new Prey (703,120);
     Prey* K = new Prey (708,354);*/
 
-    Predator* Marc_Yves = new Predator (150,150);
+    Agent* Marc_Yves = new Agent (500,500,1);
 
     Boid* Flock = new Boid (A);                           // group of preys
     /*Flock->append(B);
@@ -94,7 +97,7 @@ int main (int argc, char* argv[])
     double j;
     for (j=0; j<Flock_size; j++)
     {
-        Flock->append(new Prey (800*(((double)rand())/RAND_MAX), 800*(((double)rand())/RAND_MAX)));
+        Flock->append(new Agent (800*(((double)rand())/RAND_MAX), 800*(((double)rand())/RAND_MAX), 0));
     }
 
     Boid* Enemies = new Boid (Marc_Yves);                 // group of predators
@@ -171,7 +174,6 @@ int main (int argc, char* argv[])
 
         /**********************************************         Prey Loop           *********************************************/
 
-        // TODO : predator's influence on preys
         for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
         {
 
@@ -206,8 +208,8 @@ int main (int argc, char* argv[])
                     {
                         kk++;                                                          // one more really near fellow has been found
 
-                        v3_x_temp += (W2->get_x()) - (W1->get_x());                    // taking into account W2's influence on W1's v3
-                        v3_y_temp += (W2->get_y()) - (W1->get_y());
+                        v3_x_temp += (W1->get_x()) - (W2->get_x());                    // taking into account W2's influence on W1's v3
+                        v3_y_temp += (W1->get_y()) - (W2->get_y());
                     }
                 }
             }
@@ -226,6 +228,14 @@ int main (int argc, char* argv[])
                 v3_x_temp /= kk;
                 v3_y_temp /= kk;
             }
+
+
+            // predator's influence on preys
+            for (WP=Enemies->get_head(); WP != NULL; WP=WP->get_next())
+            {
+                
+            }
+
 
 
 
@@ -272,22 +282,24 @@ int main (int argc, char* argv[])
             if (easiestprey_id != -1)
             {
                 easiestprey = Flock->select(easiestprey_id);
-                Predator* WP2 = new Predator();
-                WP2 -> huntPrey(easiestprey);                // setting predator velocity according to the location of the easiest prey
-                WP = (Agent*) WP2;
-                delete(WP2);
+                WP -> huntPrey(easiestprey);                 // setting predator velocity according to the location of the easiest prey
+                printf("%d\n",easiestprey_id);
             }
 
             // else the predator moves randomly across the world
             else
             {
-                WP -> set_new_x_vel (2*((((double)rand())/(RAND_MAX))-1));
-                WP -> set_new_y_vel (2*((((double)rand())/(RAND_MAX))-1));  
+                //WP -> set_new_x_vel ((2*(((double)rand())/(RAND_MAX)))-1);
+                //WP -> set_new_y_vel ((2*(((double)rand())/(RAND_MAX)))-1);
+                WP -> set_new_x_vel (0);  
+                WP -> set_new_y_vel (0);
             }
 
             // calculation and storage of the new position of WP
-            WP -> set_new_x (W1->get_x() + step * WP->get_new_x_vel());
-            WP -> set_new_y (W1->get_y() + step * WP->get_new_y_vel());
+            WP -> set_new_x (WP->get_x() + step * WP->get_new_x_vel());
+            WP -> set_new_y (WP->get_y() + step * WP->get_new_y_vel());
+
+            WP -> applyWind(height,width,step);
 
         }
 

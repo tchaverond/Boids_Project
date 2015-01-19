@@ -84,6 +84,7 @@ void Boid::remove (Agent* element)
       delete(element);
       nb_elts--;
       printf("%d\n",nb_elts);
+      //element->showAll();
     }
 }
 

@@ -48,7 +48,7 @@ class Agent
     
     Agent(void);              // should only be used as a fictitious Agent to browse through the boid (seen as a Linked List)
 
-    Agent(double, double);
+    Agent(double, double, int);
 
     // =======================================================================
     //                                Destructor
@@ -109,7 +109,7 @@ class Agent
 
     void applyWind(double, double, double);
 
-    virtual void huntPrey(Agent*);
+    void huntPrey(Agent*);
 
     // =======================================================================
     //                             Public Attributes
@@ -147,6 +147,7 @@ class Agent
     static int total_headcount;
 
     int id;                        // unique id for each agent, for Linked List purposes 
+    int type_id;                   // defines whether the agent is a prey or a predator (0 = prey, 1 = predator)
 
     double x;
     double new_x;
@@ -159,6 +160,12 @@ class Agent
 
     double perception_radius;       // | static potential |
     double contact_radius;
+
+
+    // Predator-specific variables
+    double devour_radius;
+    double devour_delay;
+    double hunt_speed;
 
     Agent* next;                    // for Linked List purposes
 

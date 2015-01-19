@@ -51,28 +51,41 @@ Agent::Agent(void)             // should only be used as a fictitious Agent to b
 	perception_radius = 0;
 	contact_radius = 0;
 	next = NULL;
+    devour_radius = 0;
+    devour_delay = 0;
+    hunt_speed = 0;
 }
 
 
 
-Agent::Agent(double init_x, double init_y)
+Agent::Agent(double init_x, double init_y, int type)
 {
-    
+
+    type_id = type;
 	total_headcount ++;
     id = total_headcount;
     x = init_x;
     new_x = init_x;
     y = init_y;
     new_y = init_y;
-    x_velocity = 0;
-    y_velocity = 0;
+    x_velocity = 10;
+    y_velocity = 10;
     new_x_vel = 0;
     new_y_vel = 0;
     perception_radius = 150;
     contact_radius = 10;
     next = NULL;
-
-	// !!! addition to the output window still to be implemented  !!!
+    // the following is only relevant for predators
+    if (type == 1)
+    {
+        devour_radius = 4;
+        devour_delay = 100;
+        hunt_speed = 5;
+    } else {
+        devour_radius = -1;
+        devour_delay = -1;
+        hunt_speed = -1;
+    }
 
 	printf("Agent created succesfully !\n");
 }
@@ -121,101 +134,8 @@ void Agent::applyWind(double height, double width, double step)
 
 	/****************************************        First Approach       **************************************************/
 
-	/*double v_angle_temp;
-	double wind_force;
+    // unused
 
-	// calculation of the angle value of the current velocity, to obtain the direction of the prey
-    v_angle_temp = 180/M_PI * atan(new_y_vel/new_x_vel);
-
-    // angle correction : necessary because atan returns a value between -PI/2 & PI/2
-    // but if the prey goes to the left, the return value must be between PI/2 and 3PI/2
-    if (new_x_vel < 0)
-    {
-        v_angle_temp += 180;
-    }
-
-    // little test
-    if ((v_angle_temp < -90) || (v_angle_temp > 270))
-    {
-        printf("Wrong angle !");
-    }
-
-
-    // upper frontier
-    if (y < 10)
-    {
-        wind_force = 10/y;       // wind force is inversely proportional to the prey's distance to the border
-        // if the prey goes right, it has to keep going right, hence we add -PI/4 to obtain the desired angle
-        if (v_angle_temp < 90)             
-        {
-            wind_x += wind_force * cos(v_angle_temp - 45);
-            wind_y += wind_force * sin(v_angle_temp - 45);
-        }
-        // if the prey goes left, it has to keep going left, hence we add PI/4 to obtain the desired angle
-        else
-        {
-            wind_x += wind_force * cos(v_angle_temp + 45);
-            wind_y += wind_force * sin(v_angle_temp + 45);
-        }
-
-    }
-    // lower frontier
-    if (y > height-10)
-    {
-        wind_force = 10/(height-y);
-        if (v_angle_temp < 90)   
-        {
-            wind_x += wind_force * cos(v_angle_temp + 45);
-            wind_y += wind_force * sin(v_angle_temp + 45);
-        }
-        else
-        {
-            wind_x += wind_force * cos(v_angle_temp - 45);
-            wind_y += wind_force * sin(v_angle_temp - 45);
-        }
-
-    }
-    // left frontier
-    if (x < 10)
-    {
-        wind_force = 10/x; 
-        // if the prey goes up
-        if ((v_angle_temp > 0) && (v_angle_temp < 180))
-                 
-        {
-            wind_x += wind_force * cos(v_angle_temp - 45);
-            wind_y += wind_force * sin(v_angle_temp - 45);
-        }
-        else
-        {
-            wind_x += wind_force * cos(v_angle_temp + 45);
-            wind_y += wind_force * sin(v_angle_temp + 45);
-        }
-
-    }
-    // right frontier
-    if (x > width-10)
-    {
-        wind_force = 10/(width-x); 
-        if ((v_angle_temp > 0) && (v_angle_temp < 180))
-                 
-        {
-            wind_x += wind_force * cos(v_angle_temp + 45);
-            wind_y += wind_force * sin(v_angle_temp + 45);
-        }
-        else
-        {
-            wind_x += wind_force * cos(v_angle_temp - 45);
-            wind_y += wind_force * sin(v_angle_temp - 45);
-        }
-
-    }
-
-    new_x_vel += wind_x;
-    new_y_vel += wind_y;
-
-    new_x += step * new_x_vel;
-    new_y += step * new_y_vel;*/
 
     /****************************************        Second Approach       **************************************************/
 
@@ -238,7 +158,7 @@ void Agent::applyWind(double height, double width, double step)
     }
 
     // right frontier
-    if (x > height-50)
+    if (x > width-50)
     {
         wind_x = -wind_force/(width-x+0.1);
     }
@@ -257,11 +177,44 @@ void Agent::applyWind(double height, double width, double step)
     new_x += step * new_x_vel;
     new_y += step * new_y_vel;
 
+    // shouldn't be necessary, just one more security
+    if (new_x < 0)
+    {
+        new_x = 0;
+    }
+
+    if (new_x > width)
+    {
+        new_x = width;
+    }
+
+    if (new_y < 0)
+    {
+        new_y = 0;
+    }
+
+    if (new_y > height)
+    {
+        new_y = height;
+    }
+
 }
 
-void huntPrey(Agent* victim)
+void Agent::huntPrey(Agent* victim)
 {
-    printf("This shouldn't be printed ");
+    if (type_id == 1)
+    {
+        // getting direction of the nearest prey
+        new_x_vel = victim->get_x() - x;
+        new_y_vel = victim->get_y() - y;
+
+        // going towards it at the required speed
+        double new_vel = sqrt((new_x_vel * new_x_vel) + (new_y_vel * new_y_vel));
+        new_x_vel /= new_vel/hunt_speed;
+        new_y_vel /= new_vel/hunt_speed;  
+    } else {
+        printf("Error : Calling huntPrey method on a Prey, not on a Predator !\n");
+    }
 }
 
 // ===========================================================================
