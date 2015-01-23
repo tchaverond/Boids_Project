@@ -68,18 +68,18 @@ Agent::Agent(double init_x, double init_y, int type)
     new_x = init_x;
     y = init_y;
     new_y = init_y;
-    x_velocity = 10;
-    y_velocity = 10;
+    x_velocity = 0;
+    y_velocity = 0;
     new_x_vel = 0;
     new_y_vel = 0;
-    perception_radius = 150;
+    perception_radius = 80;
     contact_radius = 10;
     next = NULL;
     // the following is only relevant for predators
     if (type == 1)
     {
         devour_radius = 4;
-        hunt_speed = 0.8;
+        hunt_speed = 5;
         devour_time = 100000;
     } else {
         devour_radius = -1;
@@ -128,9 +128,9 @@ void Agent::applyWind(double height, double width, double step)
 
 	double wind_x = 0;
 	double wind_y = 0;
-    double max_speed = 0.2;
+    double max_speed = 1;
     double speed;
-    double wind_force = 0.03;
+    double wind_force = 0.2;
 
 	/****************************************        First Approach       **************************************************/
 

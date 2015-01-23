@@ -51,12 +51,12 @@ int main (int argc, char* argv[])
     width = 1100;
     height = 900;
 
-    step = 0.5;
+    step = 0.2;
 
-    gamma1 = 5;
-    gamma2 = 7;
-    gamma3 = 20;
-    gamma4 = 0.3;
+    gamma1 = 0.0006;
+    gamma2 = 0.0005;
+    gamma3 = 0.004;
+    gamma4 = 3;
 
     devour_delay = 2000;
 
@@ -189,8 +189,8 @@ int main (int argc, char* argv[])
             v3_y_temp = 0;
             v4_x_temp = 0;
             v4_y_temp = 0;
-            //k = 0;
-            //kk = 0;
+            k = 0;
+            kk = 0;
 
             for (W2=Flock->get_head(); W2 != NULL; W2=W2->get_next())
             {
@@ -305,11 +305,10 @@ int main (int argc, char* argv[])
                         //printf("%d\n",easiestprey_id);
                     }
 
-                    // else the predator moves randomly across the world   -> RANDOM CHARACTER TO BE DONE
                     else
                     {
-                        WP -> set_new_x_vel (WP->get_x_velocity() + step* (5*((2*(((double)rand())/(RAND_MAX)))-1)));
-                        WP -> set_new_y_vel (WP->get_y_velocity() + step* (5*((2*(((double)rand())/(RAND_MAX)))-1)));
+                        WP -> set_new_x_vel (WP->get_x_velocity() + step* (50*((2*(((double)rand())/(RAND_MAX)))-1)));
+                        WP -> set_new_y_vel (WP->get_y_velocity() + step* (50*((2*(((double)rand())/(RAND_MAX)))-1)));
                     }
 
                 }
