@@ -28,6 +28,8 @@ int main (int argc, char* argv[])
     double v2_y_temp;              // temporary stockage value for v2_y
     double v3_x_temp;              // temporary stockage value for v3_x
     double v3_y_temp;              // temporary stockage value for v3_y
+    double v3o_x_temp;             // temporary stockage value for v3_x_o (part of obstacles)
+    double v3o_y_temp;             // temporary stockage value for v3_y_o (part of obstacles)
     double v4_x_temp;              // temporary stockage value for v4_x
     double v4_y_temp;              // temporary stockage value for v4_y
 
@@ -38,6 +40,7 @@ int main (int argc, char* argv[])
 
     double k;                      // number of near (perceived) agents                   
     double kk;                     // number of really (too) near agents
+    double o;                      // number of near obstacles
 
     int Flock_size;
     int Obstacle_number;
@@ -125,6 +128,8 @@ int main (int argc, char* argv[])
     v2_y_temp = 0;
     v3_x_temp = 0;
     v3_y_temp = 0;
+    v3o_x_temp = 0;
+    v3o_y_temp = 0;
     v4_x_temp = 0;
     v4_y_temp = 0;
 
@@ -133,6 +138,7 @@ int main (int argc, char* argv[])
 
     k = 0;
     kk = 0;
+    o = 0;
 
 
     // Test Loop
@@ -201,10 +207,13 @@ int main (int argc, char* argv[])
             v2_y_temp = 0;
             v3_x_temp = 0;
             v3_y_temp = 0;
+            v3o_x_temp = 0;
+            v3o_y_temp = 0;
             v4_x_temp = 0;
             v4_y_temp = 0;
             k = 0;
             kk = 0;
+            o = 0;
 
             for (W2=Flock->get_head(); W2 != NULL; W2=W2->get_next())
             {
@@ -247,8 +256,29 @@ int main (int argc, char* argv[])
                 v3_y_temp /= kk;
             }
 
+            // obstacles' influence on preys
+            for (WO=Obstacles->get_head(); WO != NULL; WO=WO->get_next())
+            {
+                if (W1->distance(WO) < W1->get_contact_radius())
+                {
+                    o++;
 
-            // predator's influence on preys
+                    v3o_x_temp += (W1->get_x() - WO->get_x());
+                    v3o_y_temp += (W1->get_y() - WO->get_y());
+                }
+            }
+
+            if (o!=0)
+            {
+                v3o_x_temp /= o;
+                v3o_y_temp /= o;
+            }
+
+            v3_x_temp += 10*v3o_x_temp;
+            v3_y_temp += 10*v3o_y_temp;
+
+
+            // predators' influence on preys
             for (WP=Enemies->get_head(); WP != NULL; WP=WP->get_next())
             {
                 if (W1->distance(WP) < W1->get_perception_radius())
