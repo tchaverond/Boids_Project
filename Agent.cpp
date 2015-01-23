@@ -48,21 +48,22 @@ Agent::Agent(void)             // should only be used as a fictitious Agent to b
 	y_velocity = 0;
     new_x_vel = 0;
     new_y_vel = 0;
+    size_x = 0;
+    size_y = 0;
 	perception_radius = 0;
 	contact_radius = 0;
 	next = NULL;
     devour_radius = 0;
-    devour_time = 100000;
+    devour_time = RAND_MAX;
     hunt_speed = 0;
 }
-
 
 
 Agent::Agent(double init_x, double init_y, int type)
 {
 
     type_id = type;
-	total_headcount ++;
+    total_headcount ++;
     id = total_headcount;
     x = init_x;
     new_x = init_x;
@@ -72,22 +73,53 @@ Agent::Agent(double init_x, double init_y, int type)
     y_velocity = 0;
     new_x_vel = 0;
     new_y_vel = 0;
+    size_x = 0;
+    size_y = 0;
     perception_radius = 80;
     contact_radius = 10;
     next = NULL;
+
     // the following is only relevant for predators
-    if (type == 1)
+    if (type == 2)
     {
         devour_radius = 4;
-        hunt_speed = 5;
+        hunt_speed = 4;
         devour_time = 100000;
     } else {
         devour_radius = -1;
         hunt_speed = -1;
-        devour_time = 100000;
+        devour_time = RAND_MAX;  // to make it virtually infinite
     }
 
-	printf("Agent created succesfully !\n");
+    printf("Agent created succesfully !\n");
+
+}
+
+
+Agent::Agent(double init_x, double init_y, double init_size_x, double init_size_y)
+{
+
+    type_id = 0;
+    id = -1;
+    x = init_x;
+    new_x = init_x;
+    y = init_y;
+    new_y = init_y;
+    x_velocity = 0;
+    y_velocity = 0;
+    new_x_vel = 0;
+    new_y_vel = 0;
+    size_x = init_size_x;
+    size_y = init_size_y;
+    perception_radius = -1;
+    contact_radius = -1;
+    next = NULL;
+    devour_radius = -1;
+    hunt_speed = -1;
+    devour_time = RAND_MAX;
+
+    printf("Obstacle created succesfully !\n");
+
 }
 
 // ===========================================================================
@@ -120,7 +152,7 @@ void Agent::updateAll(void)
 
 void Agent::showAll(void)
 {
-	printf("Position : %lg %lg\n Velocity : %lg %lg\n", x, y, x_velocity, y_velocity);
+	printf("Position : %lg %lg\n Velocity : %lg %lg\n Size : %lg %lg\n", x, y, x_velocity, y_velocity, size_x, size_y);
 }
 
 void Agent::applyWind(double height, double width, double step)
@@ -202,7 +234,7 @@ void Agent::applyWind(double height, double width, double step)
 
 void Agent::huntPrey(Agent* victim)
 {
-    if (type_id == 1)
+    if (type_id == 2)
     {
         // getting direction of the nearest prey
         new_x_vel = victim->get_x() - x;
@@ -219,7 +251,7 @@ void Agent::huntPrey(Agent* victim)
 
 void Agent::lunchTime(void)
 {
-    if (type_id == 1)
+    if (type_id == 2)
     {
         new_x_vel = 0;
         new_y_vel = 0;

@@ -48,7 +48,9 @@ class Agent
     
     Agent(void);              // should only be used as a fictitious Agent to browse through the boid (seen as a Linked List)
 
-    Agent(double, double, int);
+    Agent(double, double, int);               // constructor for preys and predators
+
+    Agent(double, double, double, double);    // constructor for obstacles
 
     // =======================================================================
     //                                Destructor
@@ -78,6 +80,10 @@ class Agent
     inline double get_new_x_vel(void) const;
 
     inline double get_new_y_vel(void) const;
+
+    inline double get_size_x(void) const;
+
+    inline double get_size_y(void) const;
 
     inline double get_devour_radius(void) const;
 
@@ -155,7 +161,7 @@ class Agent
     static int total_headcount;
 
     int id;                        // unique id for each agent, for Linked List purposes 
-    int type_id;                   // defines whether the agent is a prey or a predator (0 = prey, 1 = predator)
+    int type_id;                   // defines whether the agent is a prey or a predator (1 = prey, 2 = predator)
 
     double x;
     double new_x;
@@ -169,6 +175,10 @@ class Agent
     double perception_radius;       // | static potential |
     double contact_radius;
 
+
+    // Obstacle-specific variables
+    double size_x;
+    double size_y;
 
     // Predator-specific variables
     double devour_radius;
@@ -232,6 +242,16 @@ double Agent::get_new_x_vel(void) const
 double Agent::get_new_y_vel(void) const
 {
     return new_y_vel;
+}
+
+double Agent::get_size_x(void) const
+{
+    return size_x;
+}
+
+double Agent::get_size_y(void) const
+{
+    return size_y;
 }
 
 double Agent::get_devour_radius(void) const

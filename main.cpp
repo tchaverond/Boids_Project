@@ -3,8 +3,6 @@
 #include <cmath>
 
 #include "Agent.h"
-//#include "Prey.h"
-//#include "Predator.h"
 #include "Boid.h"
 #include "bwindow.h"
 
@@ -42,6 +40,7 @@ int main (int argc, char* argv[])
     double kk;                     // number of really (too) near agents
 
     int Flock_size;
+    int Obstacle_number;
 
     
 
@@ -61,16 +60,17 @@ int main (int argc, char* argv[])
     devour_delay = 2000;
 
     Flock_size = 200;
+    Obstacle_number = 4;
 
 
 
 
     /********************************************          Flock Creation          *******************************************/
 
-    // type_id = 0 <=> Agent is a prey
-    // type_id = 1 <=> Agent is a predator 
+    // type_id = 1  <=> Agent is a prey
+    // type_id = 2  <=> Agent is a predator 
 
-    Agent* A = new Agent (700,700,0);
+    Agent* A = new Agent (700,700,1);
     /*Prey* B = new Prey (720,720);
     Prey* C = new Prey (740,740);
     Prey* D = new Prey (200,400);
@@ -82,7 +82,7 @@ int main (int argc, char* argv[])
     Prey* J = new Prey (703,120);
     Prey* K = new Prey (708,354);*/
 
-    Agent* Marc_Yves = new Agent (500,500,1);
+    Agent* Marc_Yves = new Agent (500,500,2);
 
     Boid* Flock = new Boid (A);                           // group of preys
     /*Flock->append(B);
@@ -99,16 +99,25 @@ int main (int argc, char* argv[])
     double j;
     for (j=0; j<Flock_size; j++)
     {
-        Flock->append(new Agent (width*(((double)rand())/RAND_MAX), height*(((double)rand())/RAND_MAX), 0));
+        Flock->append(new Agent (width*(((double)rand())/RAND_MAX), height*(((double)rand())/RAND_MAX), 1));
     }
 
     Boid* Enemies = new Boid (Marc_Yves);                 // group of predators
+
+
+    Agent* Eiffel_Tower = new Agent (550,450,5,5);
+    Boid* Obstacles = new Boid (Eiffel_Tower);
+    for (j=0; j<Obstacle_number; j++)
+    {
+        Obstacles->append(new Agent (width*(((double)rand())/RAND_MAX), height*(((double)rand())/RAND_MAX), 4+20*(((double)rand())/RAND_MAX), 4+20*(((double)rand())/RAND_MAX)));
+    }
 
 
 
     Agent* W1 = new Agent();           // the Wanderers Wi will browse through the flock
     Agent* W2 = new Agent();           // W1 is the current Agent, W2 is a fellow of W1
     Agent* WP = new Agent();           // Wanderer of the predators
+    Agent* WO = new Agent();           // Wanderer of the obstacles
 
     v1_x_temp = 0;
     v1_y_temp = 0;
@@ -128,6 +137,11 @@ int main (int argc, char* argv[])
 
     // Test Loop
     for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
+    {
+        W1->showAll();
+    }
+    // Test Loop
+    for (W1=Obstacles->get_head(); W1 != NULL; W1=W1->get_next())
     {
         W1->showAll();
     }
@@ -360,6 +374,10 @@ int main (int argc, char* argv[])
         for (WP=Enemies->get_head(); WP != NULL; WP=WP->get_next())
         {
             win.draw_fsquare(WP->get_x()-2, WP->get_y()-2, WP->get_x()+2, WP->get_y()+2, 0xFF0000);
+        }
+        for (WO=Obstacles->get_head(); WO != NULL; WO=WO->get_next())
+        {
+            win.draw_fsquare(WO->get_x()-0.5*WO->get_size_x(), WO->get_y()-0.5*WO->get_size_y(), WO->get_x()+0.5*WO->get_size_x(), WO->get_y()+0.5*WO->get_size_y(), 0x000000);
         }
 
         usleep(1000); 
