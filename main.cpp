@@ -51,7 +51,7 @@ int main (int argc, char* argv[])
     width = 1100;
     height = 900;
 
-    step = 0.6;
+    step = 0.5;
 
     gamma1 = 5;
     gamma2 = 7;
@@ -189,6 +189,8 @@ int main (int argc, char* argv[])
             v3_y_temp = 0;
             v4_x_temp = 0;
             v4_y_temp = 0;
+            //k = 0;
+            //kk = 0;
 
             for (W2=Flock->get_head(); W2 != NULL; W2=W2->get_next())
             {
