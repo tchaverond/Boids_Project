@@ -83,9 +83,9 @@ Agent::Agent(double init_x, double init_y, int type)
     {
         x_velocity = 1;
         y_velocity = 1;
-        perception_radius = 80;
+        perception_radius = 100;
         devour_radius = 4;
-        hunt_speed = 2.5;
+        hunt_speed = 3.5;
         devour_time = 100000;
     } else {
         perception_radius = 80;

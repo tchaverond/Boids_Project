@@ -20,7 +20,7 @@ int main (int argc, char* argv[])
     double gamma4;
     double mu;
     int nmax;
-    int death_rate;                // predators' death rate
+    double death_rate;                // predators' death rate
     double devour_delay;           // time that a predator spend to eat a prey
 
     double v1_x_temp;              // temporary stockage value for v1_x
@@ -48,6 +48,7 @@ int main (int argc, char* argv[])
 
     int j;
 
+    int blessing;
     int demise;
 
     
@@ -64,15 +65,16 @@ int main (int argc, char* argv[])
     gamma2 = 0.0005;
     gamma3 = 0.004;
     gamma4 = 3;
-    mu = 2;
+    mu = 0.0001;
     nmax = 400;
+    death_rate = 0.0003;
 
-    death_rate = 4000;
+    blessing = 0;
     demise = 0;
 
     devour_delay = 2000;
 
-    Flock_size = 300;
+    Flock_size = 10;
     Obstacle_number = 4;
 
 
@@ -192,9 +194,29 @@ int main (int argc, char* argv[])
 
         /**********************************************         Prey Loop           *********************************************/
 
+        /********** Natural birth of preys **********/
+
+        if (blessing == (int) (1/(mu * Flock->getnb_elts() * (1-(Flock->getnb_elts()/nmax)))))
+        {
+            Flock -> append(new Agent (width*(((double)rand())/RAND_MAX), height*(((double)rand())/RAND_MAX), 1));
+            blessing = 0;
+        } else {
+            blessing++;
+            //printf("%d\n",demise);
+        }
+
+        // preventing mistakes due to death of a prey with a 'bad' timing
+        if (blessing > 2/(mu * Flock->getnb_elts() * (1-(Flock->getnb_elts()/nmax))))
+        {
+            blessing = 0;
+        }
+
+
+        /**********     **********/
+
+
         for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
         {
-
 
             // re-initialization of stockage variables
             v1_x_temp = 0;
@@ -305,9 +327,10 @@ int main (int argc, char* argv[])
 
         /*********************************************         Predator Loop           ********************************************/
 
-        // natural death of predators
         
-        if (demise == (int) (death_rate/Enemies->getnb_elts()))
+        /********** Natural death of predators **********/
+        
+        if (demise == (int) (1/(death_rate*Enemies->getnb_elts())))
         {
             if (Enemies->getnb_elts() > 1)
             {
@@ -319,12 +342,13 @@ int main (int argc, char* argv[])
             //printf("%d\n",demise);
         }
 
-        // preventing mistakes
-        if (demise > death_rate)
+        // preventing mistakes due to creation of a new predator with a 'bad' timing
+        if (demise > 2/(death_rate*Enemies->getnb_elts()))
         {
             demise = 0;
         }
 
+        /**********     **********/
 
 
         for (WP=Enemies->get_head(); WP != NULL; WP=WP->get_next())
