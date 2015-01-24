@@ -19,7 +19,8 @@ int main (int argc, char* argv[])
     double gamma3;
     double gamma4;
     double mu;
-    double nmax;
+    int nmax;
+    int death_rate;                // predators' death rate
     double devour_delay;           // time that a predator spend to eat a prey
 
     double v1_x_temp;              // temporary stockage value for v1_x
@@ -45,6 +46,10 @@ int main (int argc, char* argv[])
     int Flock_size;
     int Obstacle_number;
 
+    int j;
+
+    int demise;
+
     
 
 
@@ -60,9 +65,12 @@ int main (int argc, char* argv[])
     gamma3 = 0.004;
     gamma4 = 3;
 
+    death_rate = 4000;
+    demise = 0;
+
     devour_delay = 2000;
 
-    Flock_size = 200;
+    Flock_size = 300;
     Obstacle_number = 4;
 
 
@@ -99,7 +107,7 @@ int main (int argc, char* argv[])
     Flock->append(J);
     Flock->append(K);*/
     srand(42);
-    double j;
+
     for (j=0; j<Flock_size; j++)
     {
         Flock->append(new Agent (width*(((double)rand())/RAND_MAX), height*(((double)rand())/RAND_MAX), 1));
@@ -309,6 +317,28 @@ int main (int argc, char* argv[])
 
         /*********************************************         Predator Loop           ********************************************/
 
+        // natural death of predators
+        
+        if (demise == (int) (death_rate/Enemies->getnb_elts()))
+        {
+            if (Enemies->getnb_elts() > 1)
+            {
+                Enemies -> remove(Enemies->get_head()->get_next());
+            }
+            demise = 0;
+        } else {
+            demise ++;
+            //printf("%d\n",demise);
+        }
+
+        // preventing mistakes
+        if (demise > death_rate)
+        {
+            demise = 0;
+        }
+
+
+
         for (WP=Enemies->get_head(); WP != NULL; WP=WP->get_next())
         {
 
@@ -336,8 +366,11 @@ int main (int argc, char* argv[])
                 // if the prey is near enough to be eaten
                 if (prey_distance < WP->get_devour_radius())
                 {
+                    // death of the prey
                     Flock -> remove(Flock->select(easiestprey_id));
                     WP -> lunchTime();
+                    // creation of a new predator at a random position
+                    Enemies -> append(new Agent (width*(((double)rand())/RAND_MAX), height*(((double)rand())/RAND_MAX), 2));
                 } 
                 else 
                 {
@@ -366,7 +399,6 @@ int main (int argc, char* argv[])
                     if (WP->distance(WO) < WP->get_contact_radius())
                     {
                         o++;
-                        printf("blabla\n");
                         v3o_x_temp += (WP->get_x() - WO->get_x());
                         v3o_y_temp += (WP->get_y() - WO->get_y());
                     }

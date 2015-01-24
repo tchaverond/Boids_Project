@@ -81,9 +81,9 @@ Agent::Agent(double init_x, double init_y, int type)
     // the following is only relevant for predators
     if (type == 2)
     {
-        perception_radius = 110;
+        perception_radius = 80;
         devour_radius = 4;
-        hunt_speed = 4;
+        hunt_speed = 3;
         devour_time = 100000;
     } else {
         perception_radius = 80;
@@ -92,7 +92,7 @@ Agent::Agent(double init_x, double init_y, int type)
         devour_time = RAND_MAX;  // to make it virtually infinite
     }
 
-    printf("Agent created succesfully !\n");
+    //printf("Agent created succesfully !\n");
 
 }
 
