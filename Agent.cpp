@@ -69,25 +69,29 @@ Agent::Agent(double init_x, double init_y, int type)
     new_x = init_x;
     y = init_y;
     new_y = init_y;
-    x_velocity = 0;
-    y_velocity = 0;
+
     new_x_vel = 0;
     new_y_vel = 0;
     size_x = 0;
     size_y = 0;
-    contact_radius = 10;
+    contact_radius = 12;
     next = NULL;
 
-    // the following is only relevant for predators
+    // predator case
     if (type == 2)
     {
-        x_velocity = 1;
-        y_velocity = 1;
+        x_velocity = 0;
+        y_velocity = 0;
         perception_radius = 100;
         devour_radius = 4;
-        hunt_speed = 3.5;
+        hunt_speed = 2.7;
         devour_time = 100000;
-    } else {
+    } 
+    // prey case
+    else
+    {
+        x_velocity = 0.2*(2*(((double)rand())/(RAND_MAX))-1);
+        y_velocity = 0.2*(2*(((double)rand())/(RAND_MAX))-1);
         perception_radius = 80;
         devour_radius = -1;
         hunt_speed = -1;
