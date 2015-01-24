@@ -43,8 +43,8 @@ int main (int argc, char* argv[])
     double kk;                     // number of really (too) near agents
     double o;                      // number of near obstacles
 
-    int Flock_size;
-    int Obstacle_number;
+    int Flock_size;                // size of the initial flock
+    int Obstacle_number;           // number of obstacles on screen
 
     int j;
 
@@ -64,6 +64,8 @@ int main (int argc, char* argv[])
     gamma2 = 0.0005;
     gamma3 = 0.004;
     gamma4 = 3;
+    mu = 2;
+    nmax = 400;
 
     death_rate = 4000;
     demise = 0;
@@ -82,30 +84,12 @@ int main (int argc, char* argv[])
     // type_id = 2  <=> Agent is a predator 
 
     Agent* A = new Agent (700,700,1);
-    /*Prey* B = new Prey (720,720);
-    Prey* C = new Prey (740,740);
-    Prey* D = new Prey (200,400);
-    Prey* E = new Prey (300,350);
-    Prey* F = new Prey (100,300);
-    Prey* G = new Prey (250,150);
-    Prey* H = new Prey (450,450);
-    Prey* I = new Prey (600,741);
-    Prey* J = new Prey (703,120);
-    Prey* K = new Prey (708,354);*/
 
     Agent* Marc_Yves = new Agent (500,500,2);
 
+
     Boid* Flock = new Boid (A);                           // group of preys
-    /*Flock->append(B);
-    Flock->append(C);
-    Flock->append(D);
-    Flock->append(E);
-    Flock->append(F);
-    Flock->append(G);
-    Flock->append(H);
-    Flock->append(I);
-    Flock->append(J);
-    Flock->append(K);*/
+
     srand(42);
 
     for (j=0; j<Flock_size; j++)
@@ -120,8 +104,12 @@ int main (int argc, char* argv[])
     Boid* Obstacles = new Boid (Eiffel_Tower);
     for (j=0; j<Obstacle_number; j++)
     {
-        Obstacles->append(new Agent (width*(((double)rand())/RAND_MAX), height*(((double)rand())/RAND_MAX), 4+20*(((double)rand())/RAND_MAX), 4+20*(((double)rand())/RAND_MAX)));
+        Obstacles->append(new Agent (width*(((double)rand())/RAND_MAX), height*(((double)rand())/RAND_MAX), 5+15*(((double)rand())/RAND_MAX), 5+15*(((double)rand())/RAND_MAX)));
     }
+
+
+
+/********************************************          Other Initialization         *******************************************/
 
 
 
@@ -384,8 +372,8 @@ int main (int argc, char* argv[])
 
                     else
                     {
-                        WP -> set_new_x_vel (WP->get_x_velocity() + step* (50*((2*(((double)rand())/(RAND_MAX)))-1)));
-                        WP -> set_new_y_vel (WP->get_y_velocity() + step* (50*((2*(((double)rand())/(RAND_MAX)))-1)));
+                        WP -> set_new_x_vel (WP->get_x_velocity() + 0.5*step*((2*(((double)rand())/(RAND_MAX)))-1));
+                        WP -> set_new_y_vel (WP->get_y_velocity() + 0.5*step*((2*(((double)rand())/(RAND_MAX)))-1));
                     }
 
                 }
@@ -467,7 +455,7 @@ int main (int argc, char* argv[])
             win.draw_fsquare(WO->get_x()-0.5*WO->get_size_x(), WO->get_y()-0.5*WO->get_size_y(), WO->get_x()+0.5*WO->get_size_x(), WO->get_y()+0.5*WO->get_size_y(), 0x000000);
         }
 
-        usleep(1000); 
+        usleep(1500); 
 
         // Test Loop
         /*for ((W1=Flock->get_head())->get_next(); W1 != NULL; W1=W1->get_next())

@@ -81,9 +81,11 @@ Agent::Agent(double init_x, double init_y, int type)
     // the following is only relevant for predators
     if (type == 2)
     {
+        x_velocity = 1;
+        y_velocity = 1;
         perception_radius = 80;
         devour_radius = 4;
-        hunt_speed = 3;
+        hunt_speed = 2.5;
         devour_time = 100000;
     } else {
         perception_radius = 80;
