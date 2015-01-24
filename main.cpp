@@ -28,8 +28,8 @@ int main (int argc, char* argv[])
     double v2_y_temp;              // temporary stockage value for v2_y
     double v3_x_temp;              // temporary stockage value for v3_x
     double v3_y_temp;              // temporary stockage value for v3_y
-    double v3o_x_temp;             // temporary stockage value for v3_x_o (part of obstacles)
-    double v3o_y_temp;             // temporary stockage value for v3_y_o (part of obstacles)
+    double v3o_x_temp;             // temporary stockage value for v3_x_o (part of obstacles, used for both preys and predators)
+    double v3o_y_temp;             // temporary stockage value for v3_y_o (part of obstacles, used for both preys and predators)
     double v4_x_temp;              // temporary stockage value for v4_x
     double v4_y_temp;              // temporary stockage value for v4_y
 
@@ -356,6 +356,31 @@ int main (int argc, char* argv[])
                     }
 
                 }
+
+                // obstacles' influence on predators
+                v3o_x_temp = 0;
+                v3o_y_temp = 0;
+                o = 0;
+                for (WO=Obstacles->get_head(); WO != NULL; WO=WO->get_next())
+                {
+                    if (WP->distance(WO) < WP->get_contact_radius())
+                    {
+                        o++;
+                        printf("blabla\n");
+                        v3o_x_temp += (WP->get_x() - WO->get_x());
+                        v3o_y_temp += (WP->get_y() - WO->get_y());
+                    }
+                }
+
+                if (o!=0)
+                {
+                    v3o_x_temp /= o;
+                    v3o_y_temp /= o;
+                }
+
+                WP -> set_new_x_vel (WP->get_new_x_vel() + step*v3o_x_temp);
+                WP -> set_new_y_vel (WP->get_new_y_vel() + step*v3o_y_temp);
+
 
                 // calculation and storage of the new position of WP
                 WP -> set_new_x (WP->get_x() + step * WP->get_new_x_vel());

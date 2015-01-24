@@ -75,17 +75,18 @@ Agent::Agent(double init_x, double init_y, int type)
     new_y_vel = 0;
     size_x = 0;
     size_y = 0;
-    perception_radius = 80;
     contact_radius = 10;
     next = NULL;
 
     // the following is only relevant for predators
     if (type == 2)
     {
+        perception_radius = 110;
         devour_radius = 4;
         hunt_speed = 4;
         devour_time = 100000;
     } else {
+        perception_radius = 80;
         devour_radius = -1;
         hunt_speed = -1;
         devour_time = RAND_MAX;  // to make it virtually infinite
