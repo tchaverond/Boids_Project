@@ -37,7 +37,7 @@
 //                                  Constructors
 // ===========================================================================
 
-Agent::Agent(void)             // should only be used as a fictitious Agent to browse through the boid (seen as a Linked List)
+/*Agent::Agent(void)             // should only be used as a fictitious Agent to browse through the boid (seen as a Linked List)
 {
 	id = 0;
 	x = 0;
@@ -56,7 +56,7 @@ Agent::Agent(void)             // should only be used as a fictitious Agent to b
     devour_radius = 0;
     devour_time = RAND_MAX;
     hunt_speed = 0;
-}
+}*/
 
 
 Agent::Agent(double init_x, double init_y, int type)

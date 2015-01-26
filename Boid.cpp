@@ -49,7 +49,7 @@ Boid::Boid(Agent* pioneer)
 
 Boid::~Boid(void)
 {
-  Agent* i = new Agent();
+  Agent* i = NULL;
   for (i=head; i->get_next()!=NULL; i=i->get_next())
     {
       delete (i);
@@ -62,7 +62,7 @@ Boid::~Boid(void)
 
 void Boid::append (Agent* element)
 {
-  Agent* i = new Agent();
+  Agent* i = NULL;
   for (i=head; i->get_next()!=NULL; i=i->get_next())
     {}
   i->set_next(element);
@@ -89,7 +89,7 @@ void Boid::remove (Agent* element)
 
 Agent* Boid::select (int id)
 {
-  Agent* i = new Agent();
+  Agent* i = NULL;
   for (i=head; i->get_id() != id; i=i->get_next())
     {}
   return i;

@@ -46,7 +46,7 @@ class Agent
     //                               Constructors
     // =======================================================================
     
-    Agent(void);              // should only be used as a fictitious Agent to browse through the boid (seen as a Linked List)
+    //Agent(void);              // should only be used as a fictitious Agent to browse through the boid (seen as a Linked List)
 
     Agent(double, double, int);               // constructor for preys and predators
 
@@ -140,11 +140,11 @@ class Agent
     // =======================================================================
     //                            Forbidden Constructors
     // =======================================================================
-    /*Agent(void)
+    Agent(void)
     {
       printf("%s:%d: error: call to forbidden constructor.\n", __FILE__, __LINE__);
       exit(EXIT_FAILURE);
-    };*/
+    };
     Agent(const Agent &model)
     {
       printf("%s:%d: error: call to forbidden constructor.\n", __FILE__, __LINE__);

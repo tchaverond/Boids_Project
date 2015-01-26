@@ -36,7 +36,7 @@ int main (int argc, char* argv[])
 
     int easiestprey_id;                  // temporary stockage value of the id of the nearest prey for the predator to eat
     double prey_distance;                // temporary stockage value of the distance prey-predator
-    Agent* easiestprey = new Agent();    // temporary stockage value of the nearest prey
+    Agent* easiestprey = NULL;           // temporary stockage value of the nearest prey
 
 
     double k;                      // number of near (perceived) agents                   
@@ -95,7 +95,7 @@ int main (int argc, char* argv[])
     Flock_size = 10;
     Obstacle_number = 10;
 
-    srand(42);
+    srand(time(NULL));
 
 
 
@@ -135,10 +135,10 @@ int main (int argc, char* argv[])
 
 
 
-    Agent* W1 = new Agent();           // the Wanderers Wi will browse through the flock
-    Agent* W2 = new Agent();           // W1 is the current Agent, W2 is a fellow of W1
-    Agent* WP = new Agent();           // Wanderer of the predators
-    Agent* WO = new Agent();           // Wanderer of the obstacles
+    Agent* W1 = NULL;          // the Wanderers Wi will browse through the flock
+    Agent* W2 = NULL;          // W1 is the current Agent, W2 is a fellow of W1
+    Agent* WP = NULL;          // Wanderer of the predators
+    Agent* WO = NULL;          // Wanderer of the obstacles
 
     v1_x_temp = 0;
     v1_y_temp = 0;
