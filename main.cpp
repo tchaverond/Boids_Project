@@ -56,7 +56,7 @@ int main (int argc, char* argv[])
 
     /**************************************         Parameters' Initialization          **************************************/
 
-    width = 1100;
+    width = 1120;
     height = 900;
 
     step = 0.2;
@@ -67,12 +67,12 @@ int main (int argc, char* argv[])
     gamma4 = 2;
     mu = 0.0001;
     nmax = 400;
-    death_rate = 0.0003;
+    death_rate = 0.00036;
 
     blessing = 0;
     demise = 0;
 
-    devour_delay = 2000;
+    devour_delay = 1500;
 
     Flock_size = 10;
     Obstacle_number = 10;
@@ -140,15 +140,15 @@ int main (int argc, char* argv[])
 
 
     // Test Loop
-    for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
+    /*for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
     {
         W1->showAll();
-    }
+    }*/
     // Test Loop
-    for (W1=Obstacles->get_head(); W1 != NULL; W1=W1->get_next())
+    /*for (W1=Obstacles->get_head(); W1 != NULL; W1=W1->get_next())
     {
         W1->showAll();
-    }
+    }*/
 
 
 
@@ -463,7 +463,7 @@ int main (int argc, char* argv[])
 
         /***********************************************         Paint Loops           **********************************************/
 
-        win.draw_fsquare(0,0,width,height,0xFFFFFF);      // refreshing the window
+        win.draw_fsquare(0,0,width,height,0xFFDB55);      // refreshing the window
 
         for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
         {
