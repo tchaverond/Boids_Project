@@ -20,7 +20,7 @@ int main (int argc, char* argv[])
     double gamma4;
     double mu;
     int nmax;
-    double death_rate;                // predators' death rate
+    double death_rate;             // predators' death rate
     double devour_delay;           // time that a predator spend to eat a prey
 
     double v1_x_temp;              // temporary stockage value for v1_x
@@ -48,8 +48,8 @@ int main (int argc, char* argv[])
 
     int j;
 
-    int blessing;
-    int demise;
+    int blessing;            // used to know whenever a prey is born
+    int demise;              // used to know whenever a predator dies
 
     
 
@@ -75,7 +75,7 @@ int main (int argc, char* argv[])
     devour_delay = 2000;
 
     Flock_size = 10;
-    Obstacle_number = 4;
+    Obstacle_number = 10;
 
 
 
@@ -111,7 +111,7 @@ int main (int argc, char* argv[])
 
 
 
-/********************************************          Other Initialization         *******************************************/
+    /*******************************************          Other Initialization         ******************************************/
 
 
 
@@ -277,7 +277,7 @@ int main (int argc, char* argv[])
             // obstacles' influence on preys
             for (WO=Obstacles->get_head(); WO != NULL; WO=WO->get_next())
             {
-                if (W1->distance(WO) < W1->get_contact_radius())
+                if (W1->distanceObs(WO) < W1->get_contact_radius())
                 {
                     o++;
 
@@ -408,7 +408,7 @@ int main (int argc, char* argv[])
                 o = 0;
                 for (WO=Obstacles->get_head(); WO != NULL; WO=WO->get_next())
                 {
-                    if (WP->distance(WO) < WP->get_contact_radius())
+                    if (WP->distanceObs(WO) < WP->get_contact_radius())
                     {
                         o++;
                         v3o_x_temp += (WP->get_x() - WO->get_x());
@@ -476,7 +476,7 @@ int main (int argc, char* argv[])
         }
         for (WO=Obstacles->get_head(); WO != NULL; WO=WO->get_next())
         {
-            win.draw_fsquare(WO->get_x()-0.5*WO->get_size_x(), WO->get_y()-0.5*WO->get_size_y(), WO->get_x()+0.5*WO->get_size_x(), WO->get_y()+0.5*WO->get_size_y(), 0x000000);
+            win.draw_fsquare(WO->get_x(), WO->get_y(), WO->get_x()+WO->get_size_x(), WO->get_y()+WO->get_size_y(), 0x000000);
         }
 
         usleep(1500); 

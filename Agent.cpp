@@ -90,8 +90,8 @@ Agent::Agent(double init_x, double init_y, int type)
     // prey case
     else
     {
-        x_velocity = 0.2*(2*(((double)rand())/(RAND_MAX))-1);
-        y_velocity = 0.2*(2*(((double)rand())/(RAND_MAX))-1);
+        x_velocity = 0.15*(2*(((double)rand())/(RAND_MAX))-1);
+        y_velocity = 0.15*(2*(((double)rand())/(RAND_MAX))-1);
         perception_radius = 80;
         devour_radius = -1;
         hunt_speed = -1;
@@ -147,6 +147,34 @@ double Agent::distance(Agent* Fellow)
 {
 	double result = ((Fellow->x)-(this->x)) * ((Fellow->x)-(this->x))  +  ((Fellow->y)-(this->y)) * ((Fellow->y)-(this->y));
 	return (sqrt(result));
+}
+
+// alternative method for obstacles, to calculate a distance more accurate between a living being and an obstacle (according to which side the living being comes from)
+double Agent::distanceObs(Agent* Obstacle)
+{
+    double result = 0;
+
+    if ((this->x < Obstacle->x) && (this->y < Obstacle->y))
+    {
+        result = ((Obstacle->x)-(this->x)) * ((Obstacle->x)-(this->x))  +  ((Obstacle->y)-(this->y)) * ((Obstacle->y)-(this->y));
+    }
+
+    if ((this->x < Obstacle->x) && (this->y > Obstacle->y))
+    {
+        result = ((Obstacle->x)-(this->x)) * ((Obstacle->x)-(this->x))  +  ((Obstacle->y+Obstacle->size_y)-(this->y)) * ((Obstacle->y+Obstacle->size_y)-(this->y));
+    }
+
+    if ((this->x > Obstacle->x) && (this->y < Obstacle->y))
+    {
+        result = ((Obstacle->x+Obstacle->size_x)-(this->x)) * ((Obstacle->x+Obstacle->size_x)-(this->x))  +  ((Obstacle->y)-(this->y)) * ((Obstacle->y)-(this->y));
+    }
+
+    if ((this->x > Obstacle->x) && (this->y > Obstacle->y))
+    {
+        result = ((Obstacle->x+Obstacle->size_x)-(this->x)) * ((Obstacle->x+Obstacle->size_x)-(this->x))  +  ((Obstacle->y+Obstacle->size_y)-(this->y)) * ((Obstacle->y+Obstacle->size_y)-(this->y));
+    }
+    
+    return (sqrt(result));
 }
 
 void Agent::updateAll(void)

@@ -111,7 +111,9 @@ class Agent
     //                              Public Methods
     // =======================================================================
 
-    double distance(Agent*);
+    double distance(Agent*);                // distance to another living being
+
+    double distanceObs(Agent*);             // distance to an obstacle
 
     void updateAll(void);
 
