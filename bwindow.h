@@ -79,6 +79,11 @@ class bwindow
     void draw_fsquare(int x1, int y1, int x2, int y2, unsigned int color);
 // ***** draw_point(): put a pixel at x1,y1 with color color
     void draw_point(int x1, int y1, unsigned int color);
+
+
+// ********** Addition by Thomas **********
+    // change the title of the window to display number of preys and number of predators
+    void change_title(int preys, int predators);
  
     
 

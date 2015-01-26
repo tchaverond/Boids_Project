@@ -125,7 +125,7 @@ Agent::Agent(double init_x, double init_y, double init_size_x, double init_size_
     hunt_speed = -1;
     devour_time = RAND_MAX;
 
-    printf("Obstacle created succesfully !\n");
+    //printf("Obstacle created succesfully !\n");
 
 }
 
@@ -291,7 +291,7 @@ void Agent::lunchTime(void)
         new_x_vel = 0;
         new_y_vel = 0;
         devour_time = 0;
-        printf("Miam !\n");
+        //printf("Miam !\n");
 
     } else {
         printf("Error : Calling lunchTime method on a Prey, not on a Predator !\n");

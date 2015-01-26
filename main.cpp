@@ -479,6 +479,8 @@ int main (int argc, char* argv[])
             win.draw_fsquare(WO->get_x(), WO->get_y(), WO->get_x()+WO->get_size_x(), WO->get_y()+WO->get_size_y(), 0x000000);
         }
 
+        win.change_title(Flock->getnb_elts(), Enemies->getnb_elts());
+
         usleep(1500); 
 
     }

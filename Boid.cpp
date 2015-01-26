@@ -68,7 +68,7 @@ void Boid::append (Agent* element)
   i->set_next(element);
   element->set_next(NULL);
   nb_elts++;
-  printf("%d\n",nb_elts);
+  //printf("%d\n",nb_elts);
 }
 
 void Boid::remove (Agent* element)
@@ -83,7 +83,7 @@ void Boid::remove (Agent* element)
       i->set_next(element->get_next());
       delete(element);
       nb_elts--;
-      printf("%d\n",nb_elts);
+      //printf("%d\n",nb_elts);
     }
 }
 

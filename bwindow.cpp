@@ -201,6 +201,18 @@ void bwindow::draw_fsquare(int x1,int y1,int x2,int y2,unsigned int color)
  XFillRectangle(display, win, gc, x1, y1, x2-x1, y2-y1);
  XSetForeground(display, gc,0x0);
 }
+
+
+void bwindow::change_title(int preys, int predators)
+{
+    char new_title [100];
+    sprintf(new_title, "Preys : %d     Predators : %d",preys,predators);
+    strcpy(window_name,new_title);
+    Pixmap icon_pixmap;
+    XSetStandardProperties(display, win, window_name, icon_name,0 ,0, icon_pixmap, &size_hints);
+}
+
+
 char * bwindow::get_lastkey()
 {
     return lastkey;
