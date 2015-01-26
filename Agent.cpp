@@ -31,7 +31,7 @@
 //                         Definition of static attributes
 // ===========================================================================
 
-  int Agent::total_headcount = 0;
+  int Agent::total_headcount = 0;                    // deprecated
 
 // ===========================================================================
 //                                  Constructors
@@ -135,7 +135,6 @@ Agent::Agent(double init_x, double init_y, double init_size_x, double init_size_
 
 Agent::~Agent(void)
 {
-	// !!! unfinished !!!
 	total_headcount --;
 }
 

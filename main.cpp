@@ -14,12 +14,12 @@ int main (int argc, char* argv[])
     double height;
 
     double step;
-    double gamma1;
+    double gamma1;                 // velocity parameters (as defined in the subject)
     double gamma2;
     double gamma3;
     double gamma4;
-    double mu;
-    int nmax;
+    double mu;                     // preys' birth rate
+    int nmax;                      // preys' maximum headcount
     double death_rate;             // predators' death rate
     double devour_delay;           // time that a predator spend to eat a prey
 
@@ -59,14 +59,32 @@ int main (int argc, char* argv[])
     width = 1120;
     height = 900;
 
+
+    /********** Set of interesting parameters if there's only one predator **********/
+
+    //step = 0.4;
+
+    //gamma1 = 0.002;
+    //gamma2 = 0.0005;
+    //gamma3 = 0.002;
+    //gamma4 = 2;
+    //nmax = 300;
+
+
+    /********** Set of interesting parameters for full simulation **********/
+
     step = 0.2;
 
+    //gamma1 = 0;
+    //gamma2 = 0;
+    //gamma3 = 0;
     gamma1 = 0.0006;
     gamma2 = 0.0005;
-    gamma3 = 0.004;
-    gamma4 = 2;
-    mu = 0.0001;
-    nmax = 400;
+    gamma3 = 0.002;
+    gamma4 = 1.9;
+
+    mu = 0.00015;
+    nmax = 150;
     death_rate = 0.00036;
 
     blessing = 0;
@@ -76,6 +94,8 @@ int main (int argc, char* argv[])
 
     Flock_size = 10;
     Obstacle_number = 10;
+
+    srand(42);
 
 
 
@@ -92,9 +112,9 @@ int main (int argc, char* argv[])
 
     Boid* Flock = new Boid (A);                           // group of preys
 
-    srand(42);
 
-    for (j=0; j<Flock_size; j++)
+
+    for (j=0; j<Flock_size-1; j++)
     {
         Flock->append(new Agent (width*(((double)rand())/RAND_MAX), height*(((double)rand())/RAND_MAX), 1));
     }
@@ -102,9 +122,9 @@ int main (int argc, char* argv[])
     Boid* Enemies = new Boid (Marc_Yves);                 // group of predators
 
 
-    Agent* Eiffel_Tower = new Agent (550,450,5,5);
+    Agent* Eiffel_Tower = new Agent (557,447,5,5);
     Boid* Obstacles = new Boid (Eiffel_Tower);
-    for (j=0; j<Obstacle_number; j++)
+    for (j=0; j<Obstacle_number-1; j++)
     {
         Obstacles->append(new Agent (width*(((double)rand())/RAND_MAX), height*(((double)rand())/RAND_MAX), 5+15*(((double)rand())/RAND_MAX), 5+15*(((double)rand())/RAND_MAX)));
     }
@@ -141,11 +161,6 @@ int main (int argc, char* argv[])
 
     // Test Loop
     /*for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
-    {
-        W1->showAll();
-    }*/
-    // Test Loop
-    /*for (W1=Obstacles->get_head(); W1 != NULL; W1=W1->get_next())
     {
         W1->showAll();
     }*/
@@ -202,7 +217,7 @@ int main (int argc, char* argv[])
             blessing = 0;
         } else {
             blessing++;
-            //printf("%d\n",demise);
+            //printf("%d\n",blessing);
         }
 
         // preventing mistakes due to death of a prey with a 'bad' timing
@@ -211,8 +226,8 @@ int main (int argc, char* argv[])
             blessing = 0;
         }
 
-
         /**********     **********/
+
 
 
         for (W1=Flock->get_head(); W1 != NULL; W1=W1->get_next())
@@ -349,6 +364,7 @@ int main (int argc, char* argv[])
         }
 
         /**********     **********/
+
 
 
         for (WP=Enemies->get_head(); WP != NULL; WP=WP->get_next())
